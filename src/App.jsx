@@ -38,11 +38,18 @@ function App() {
     console.log("✅ Réponse API :", data);
 
     if (data.choices && data.choices[0]) {
-      setGeneratedStory(data.choices[0].message.content);
-    } else {
-      setGeneratedStory("❌ Aucune histoire générée. La réponse était vide.");
-      console.error("Réponse inattendue :", data);
-    }
+  // Animation texte "parchemin"
+  const fullText = data.choices[0].message.content;
+  let current = "";
+  let i = 0;
+
+  const interval = setInterval(() => {
+    current += fullText[i];
+    setGeneratedStory(current);
+    i++;
+    if (i >= fullText.length) clearInterval(interval);
+  }, 20); // ← Vitesse d'écriture (20 ms par caractère)
+}
   } catch (error) {
     setGeneratedStory("❌ Erreur lors de la génération. Vérifie ta clé API ou ta connexion.");
     console.error("Erreur réseau/API :", error);
@@ -128,10 +135,23 @@ function App() {
           Générer l’histoire
         </button>
 
-        {generatedStory && (
-          <div style={{ marginTop: "1rem", backgroundColor: "#f0f0f0", padding: "1rem", borderRadius: "6px", whiteSpace: "pre-wrap" }}>
-            {generatedStory}
-          </div>
+       {generatedStory && (
+  <div
+    style={{
+      marginTop: "1rem",
+      backgroundColor: "#fff8dc", // couleur "parchemin"
+      padding: "1rem",
+      borderRadius: "8px",
+      fontFamily: "'Cormorant Garamond', serif", // belle police antique
+      boxShadow: "0 0 20px rgba(0,0,0,0.3)",
+      lineHeight: "1.6",
+      whiteSpace: "pre-wrap",
+      border: "2px solid #deb887", // bordure façon vieux cuir
+    }}
+  >
+    {generatedStory}
+  </div>
+)}
         )}
       </div>
     </div>
