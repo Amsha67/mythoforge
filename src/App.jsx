@@ -134,8 +134,54 @@ function App() {
         >
           Générer l’histoire
         </button>
+function App() {
+  // ... tes useState et fonctions ici
 
-       {generatedStory && (
+  // 💡 Bloc de style pour l'animation
+  const animationStyle = `
+    @keyframes scrollFade {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  `;
+
+  return (
+    <>
+      <style>{animationStyle}</style>
+      <div style={{ /* tout ton JSX ici */ }}>
+
+      {generatedStory && (
+  <div
+    style={{
+      marginTop: "1rem",
+      padding: "2rem",
+      borderRadius: "10px",
+      fontFamily: "'Cormorant Garamond', serif",
+      color: "#2c1b10",
+      lineHeight: "1.7",
+      whiteSpace: "pre-wrap",
+      border: "4px solid #a97442",
+      backgroundImage: 'url("https://i.imgur.com/w5v3GZL.jpg")',
+      backgroundSize: "cover",
+      backgroundRepeat: "no-repeat",
+      boxShadow: "0 0 20px rgba(0,0,0,0.4)",
+      animation: "scrollFade 1s ease-in-out",
+      backgroundPosition: "center",
+    }}
+  >
+    {generatedStory}
+  </div>
+)}
+
+  </div>
+)}
+
   <div
     style={{
       marginTop: "1rem",
