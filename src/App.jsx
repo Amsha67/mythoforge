@@ -135,10 +135,11 @@ function App() {
           Générer l’histoire
         </button>
 function App() {
-  // ... tes useState et fonctions ici
+  const [generatedStory, setGeneratedStory] = useState("");
+  // ... tes autres useState
 
-  // 💡 Bloc de style pour l'animation
-  const animationStyle = `console.log("✅ Animation injectée !")
+  // ✅ On déclare le style ici (en haut)
+  const animationStyle = `
     @keyframes scrollFade {
       from {
         opacity: 0;
