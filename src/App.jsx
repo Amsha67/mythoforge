@@ -15,13 +15,17 @@ function App() {
   };
 
   const generateAdventure = async () => {
-    const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant : ${elements.join(", ")}.`;
+  const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
 
+  // Message d'attente
+  setGeneratedStory("⏳ L'IA forge ton histoire mythologique...");
+
+  try {
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer VOTRE_CLE_API`, // ← Remplace ici par ta clé
+        Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
         model: "gpt-4",
@@ -31,8 +35,20 @@ function App() {
     });
 
     const data = await response.json();
-    setGeneratedStory(data.choices[0].message.content);
-  };
+    console.log("✅ Réponse API :", data);
+
+    if (data.choices && data.choices[0]) {
+      setGeneratedStory(data.choices[0].message.content);
+    } else {
+      setGeneratedStory("❌ Aucune histoire générée. La réponse était vide.");
+      console.error("Réponse inattendue :", data);
+    }
+  } catch (error) {
+    setGeneratedStory("❌ Erreur lors de la génération. Vérifie ta clé API ou ta connexion.");
+    console.error("Erreur réseau/API :", error);
+  }
+};
+
 
   return (
     <div style={{ backgroundColor: "#0f1a2c", color: "white", minHeight: "100vh", padding: "2rem" }}>
