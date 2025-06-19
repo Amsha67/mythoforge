@@ -138,7 +138,7 @@ function App() {
   // ... tes useState et fonctions ici
 
   // 💡 Bloc de style pour l'animation
-  const animationStyle = `
+  const animationStyle = `console.log("✅ Animation injectée !")
     @keyframes scrollFade {
       from {
         opacity: 0;
@@ -152,9 +152,11 @@ function App() {
   `;
 
   return (
-    <>
-      <style>{animationStyle}</style>
-      <div style={{ /* tout ton JSX ici */ }}>
+  <>
+    <style>{animationStyle}</style>
+    <div style={{ backgroundColor: "#0f1a2c", color: "white", minHeight: "100vh", padding: "2rem" }}>
+      {/* ... ton contenu ici ... */}
+
 
       {generatedStory && (
   <div
