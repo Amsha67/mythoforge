@@ -17,8 +17,8 @@ function App() {
 
   const generateAdventure = async () => {
     const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
-    setLoading(true);
     setGeneratedStory("");
+    setLoading(true);
 
     try {
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -35,7 +35,6 @@ function App() {
       });
 
       const data = await response.json();
-
       if (data.choices && data.choices[0]) {
         setGeneratedStory(data.choices[0].message.content);
       } else {
@@ -50,12 +49,11 @@ function App() {
     }
   };
 
-  // ✅ Style d’animation parchemin
   const animationStyle = `
     @keyframes scrollFade {
       from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
       }
       to {
         opacity: 1;
@@ -67,7 +65,6 @@ function App() {
   return (
     <>
       <style>{animationStyle}</style>
-
       <div style={{ backgroundColor: "#0f1a2c", color: "white", minHeight: "100vh", padding: "2rem" }}>
         <h1 style={{ fontSize: "2rem", fontWeight: "bold" }}>MythoForge</h1>
 
@@ -145,23 +142,25 @@ function App() {
             Générer l’histoire
           </button>
 
+          {/* SABLIER LORS DU CHARGEMENT */}
           {loading && (
             <div style={{ textAlign: "center", marginTop: "2rem" }}>
               <img
-                src="https://img.icons8.com/?size=100&id=RdVKR4o9BB37&format=png&color=000000"
-                alt="Sablier antique"
-                style={{ width: "60px", height: "60px", marginBottom: "1rem" }}
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Hourglass_icon_dark.svg/120px-Hourglass_icon_dark.svg.png"
+                alt="Chargement..."
+                style={{ width: "60px", animation: "spin 1s linear infinite" }}
               />
-              <p style={{ fontStyle: "italic", color: "#ccc" }}>Génération en cours...</p>
+              <p style={{ fontStyle: "italic", color: "#555" }}>Génération en cours...</p>
             </div>
           )}
 
+          {/* AFFICHAGE DE L’HISTOIRE */}
           {!loading && generatedStory && (
             <div
               style={{
                 marginTop: "1rem",
-                backgroundColor: "#c7976d",
-                backgroundImage: 'url("https://www.transparenttextures.com/patterns/clean-gray-paper.png")',
+                backgroundColor: "#f5f5dc",
+                backgroundImage: "url('https://www.transparenttextures.com/patterns/clean-gray-paper.png')",
                 backgroundSize: "cover",
                 border: "2px solid #d1b77c",
                 padding: "1.5rem",
