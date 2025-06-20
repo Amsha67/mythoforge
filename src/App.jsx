@@ -49,16 +49,21 @@ function App() {
     }
   };
 
-  const animationStyle = `
+    const animationStyle = `
     @keyframes scrollFade {
       from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(20px);
       }
       to {
         opacity: 1;
         transform: translateY(0);
       }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   `;
 
@@ -147,10 +152,10 @@ function App() {
             <div style={{ textAlign: "center", marginTop: "2rem" }}>
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Hourglass_icon_dark.svg/120px-Hourglass_icon_dark.svg.png"
-                alt="Les dieux écrivent l'histoire"
+                
                 style={{ width: "60px", animation: "spin 1s linear infinite" }}
               />
-              <p style={{ fontStyle: "italic", color: "#555" }}>Génération en cours...</p>
+              <p style={{ fontStyle: "italic", color: "#555" }}>Les Dieux écrivent l'Histoire</p>
             </div>
           )}
 
