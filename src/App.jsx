@@ -1,4 +1,6 @@
+// App.jsx avec support CSS personnalisé et sablier intégré
 import React, { useState } from "react";
+import "./App.css";
 
 function App() {
   const [civilisation, setCivilisation] = useState("Grèce");
@@ -17,9 +19,7 @@ function App() {
 
   const generateAdventure = async () => {
     const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
-    setGeneratedStory("");
     setLoading(true);
-
     try {
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
@@ -35,165 +35,81 @@ function App() {
       });
 
       const data = await response.json();
-      if (data.choices && data.choices[0]) {
-        setGeneratedStory(data.choices[0].message.content);
-      } else {
-        setGeneratedStory("❌ Erreur : aucune histoire reçue.");
-        console.error("Détails :", data);
-      }
+      setGeneratedStory(data.choices?.[0]?.message?.content || "Erreur");
     } catch (error) {
-      setGeneratedStory("❌ Erreur lors de la génération.");
-      console.error("Erreur de fetch :", error);
+      setGeneratedStory("Erreur lors de la génération");
     } finally {
       setLoading(false);
     }
   };
 
-    const animationStyle = `
-    @keyframes scrollFade {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  
-  @keyframes glow {
-  0% { filter: drop-shadow(0 0 4px gold); }
-  50% { filter: drop-shadow(0 0 10px goldenrod); }
-  100% { filter: drop-shadow(0 0 4px gold); }
-}
- ` ;
+  const getBackgroundClass = () => {
+    if (civilisation === "Grèce") return "grece";
+    if (civilisation === "Égypte") return "egypte";
+    if (civilisation === "Nordique") return "nordique";
+  };
 
   return (
-    <>
-      <style>{animationStyle}</style>
-      <div style={{ backgroundColor: "#0f1a2c", color: "white", minHeight: "100vh", padding: "2rem" }}>
-        <h1 style={{ fontSize: "2rem", fontWeight: "bold" }}>MythoForge</h1>
+    <div className={`main-container ${getBackgroundClass()}`}>
+      <div className="content-wrapper">
+        <h1 className="title">MythoForge</h1>
+        <div className="column-frame">
+          <div className="generator-box">
+            <h2>Crée ton aventure mythologique</h2>
 
-        <div style={{ backgroundColor: "white", color: "black", padding: "1rem", borderRadius: "12px", maxWidth: "600px", marginTop: "1rem" }}>
-          <h2 style={{ fontWeight: "bold" }}>Crée ton aventure mythologique</h2>
-
-          <label>Civilisation antique :</label>
-          <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}>
-            {["Grèce", "Égypte", "Nordique"].map((c) => (
-              <button
-                key={c}
-                onClick={() => setCivilisation(c)}
-                style={{
-                  padding: "0.3rem 1rem",
-                  backgroundColor: civilisation === c ? "#cce4ff" : "#eee",
-                  border: "1px solid #ccc",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                }}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
-
-          <label>Style d’aventure :</label>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1rem" }}>
-            {["Tragédie héroïque", "Épopée divine", "Romance interdite", "Complot cosmique"].map((s) => (
-              <button
-                key={s}
-                onClick={() => setStyle(s)}
-                style={{
-                  padding: "0.3rem 1rem",
-                  backgroundColor: style === s ? "#cce4ff" : "#eee",
-                  border: "1px solid #ccc",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                }}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
-
-          <label>Éléments clés :</label>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1rem" }}>
-            {["Héros maudit", "Monstre ancestral", "Artefact sacré", "Dieux en guerre"].map((e) => (
-              <button
-                key={e}
-                onClick={() => toggleElement(e)}
-                style={{
-                  padding: "0.3rem 1rem",
-                  backgroundColor: elements.includes(e) ? "#cce4ff" : "#eee",
-                  border: "1px solid #ccc",
-                  borderRadius: "6px",
-                  cursor: "pointer",
-                }}
-              >
-                {e}
-              </button>
-            ))}
-          </div>
-
-          <button
-            onClick={generateAdventure}
-            style={{
-              backgroundColor: "#007bff",
-              color: "white",
-              padding: "0.5rem 1rem",
-              borderRadius: "6px",
-              border: "none",
-              cursor: "pointer",
-            }}
-          >
-            Générer l’histoire
-          </button>
-
-          {loading && (
-  <div style={{ textAlign: "center", marginTop: "2rem" }}>
-    <img
-      src="https://img.icons8.com/ios-filled/100/000000/hourglass.png"
-      alt="Sablier antique"
-      style={{
-        width: "60px",
-        height: "60px",
-        marginBottom: "1rem",
-        animation: "spin 3s linear infinite",
-      }}
-    />
-    <p style={{ fontStyle: "italic", color: "#666" }}>Génération en cours...</p>
-  </div>
-)}
-
-          {/* AFFICHAGE DE L’HISTOIRE */}
-          {!loading && generatedStory && (
-            <div
-              style={{
-                marginTop: "1rem",
-                backgroundColor: "#f5f5dc",
-                backgroundImage: "url('https://www.transparenttextures.com/patterns/clean-gray-paper.png')",
-                backgroundSize: "cover",
-                border: "2px solid #d1b77c",
-                padding: "1.5rem",
-                borderRadius: "12px",
-                fontFamily: "'EB Garamond', serif",
-                fontSize: "1.1rem",
-                whiteSpace: "pre-wrap",
-                boxShadow: "0 0 20px rgba(0,0,0,0.1)",
-                animation: "scrollFade 1.5s ease-in-out",
-              }}
-            >
-              {generatedStory}
+            <label>Civilisation antique :</label>
+            <div className="button-row">
+              {["Grèce", "Égypte", "Nordique"].map((c) => (
+                <button
+                  key={c}
+                  onClick={() => setCivilisation(c)}
+                  className={`stone-button ${civilisation === c ? "active" : ""}`}
+                >
+                  {c}
+                </button>
+              ))}
             </div>
-          )}
+
+            <label>Style :</label>
+            <div className="button-row">
+              {["Tragédie héroïque", "Épopée divine", "Romance interdite", "Complot cosmique"].map((s) => (
+                <button key={s} onClick={() => setStyle(s)} className="stone-button">
+                  {s}
+                </button>
+              ))}
+            </div>
+
+            <label>Éléments :</label>
+            <div className="button-row">
+              {["Héros maudit", "Monstre ancestral", "Artefact sacré", "Dieux en guerre"].map((e) => (
+                <button key={e} onClick={() => toggleElement(e)} className="stone-button">
+                  {e}
+                </button>
+              ))}
+            </div>
+
+            <button onClick={generateAdventure} className="stone-button main-action">
+              Générer l’histoire
+            </button>
+
+            {loading && (
+              <div className="loading-block">
+                <img src="https://cdn-icons-png.flaticon.com/512/148/148855.png" alt="chargement" className="spin" />
+                <p>Génération en cours...</p>
+              </div>
+            )}
+
+            {!loading && generatedStory && (
+              <div className="story-block">
+                {generatedStory}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
 export default App;
+
