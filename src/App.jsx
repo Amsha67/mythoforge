@@ -140,20 +140,39 @@ function App() {
             Générer l’histoire
           </button>
 
-          {generatedStory && (
-            <div
-              style={{
-                marginTop: "1rem",
-                backgroundColor: "#fef4dc",
-                padding: "1rem",
-                borderRadius: "10px",
-                whiteSpace: "pre-wrap",
-                animation: "scrollFade 1s ease-out",
-                fontFamily: "'Georgia', serif",
-                border: "2px solid #d4af37",
-              }}
-            >
-              {generatedStory}
+          {loading && (
+  <div style={{ textAlign: "center", marginTop: "2rem" }}>
+    <img
+      src="https://i.gifer.com/origin/e0/e02a09e06168ef7b83840c6bbadb7ee7_w200.gif"
+      alt="Sablier antique"
+      style={{ width: "60px", height: "60px", marginBottom: "1rem" }}
+    />
+    <p style={{ fontStyle: "italic", color: "#ccc" }}>Génération en cours...</p>
+  </div>
+)}
+
+{!loading && generatedStory && (
+  <div
+    style={{
+      marginTop: "1rem",
+      backgroundColor: #c7976d;
+backgroundImage: url("https://www.transparenttextures.com/patterns/clean-gray-paper.png");
+/* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+      backgroundSize: "cover",
+      border: "2px solid #d1b77c",
+      padding: "1.5rem",
+      borderRadius: "12px",
+      fontFamily: "'EB Garamond', serif",
+      fontSize: "1.1rem",
+      whiteSpace: "pre-wrap",
+      boxShadow: "0 0 20px rgba(0,0,0,0.1)",
+      animation: "scrollFade 1.5s ease-in-out",
+    }}
+  >
+    {generatedStory}
+  </div>
+)}
+
             </div>
           )}
         </div>
