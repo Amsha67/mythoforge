@@ -65,7 +65,13 @@ function App() {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-  `;
+  
+  @keyframes glow {
+  0% { filter: drop-shadow(0 0 4px gold); }
+  50% { filter: drop-shadow(0 0 10px goldenrod); }
+  100% { filter: drop-shadow(0 0 4px gold); }
+}
+ ` ;
 
   return (
     <>
@@ -151,11 +157,14 @@ function App() {
           {loading && (
             <div style={{ textAlign: "center", marginTop: "2rem" }}>
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Hourglass_icon_dark.svg/120px-Hourglass_icon_dark.svg.png"
-                
+                src="https://p.turbosquid.com/ts-thumb/Oe/jIorXJ/uc/a/png/1646253849/2500x1406/fit_q99/af8faf04eec4a7f33a6f80b0f97f4f27ee20db4c/a.jpg"
+                style={{
+  animation: "spin 4s linear infinite, glow 2s ease-in-out infinite",
+}}
+
                 style={{ width: "60px", animation: "spin 1s linear infinite" }}
               />
-              <p style={{ fontStyle: "italic", color: "#555" }}>Les Dieux écrivent l'Histoire</p>
+              <p style={{ fontStyle: "italic", color: "#555" }}>Les Dieux écrivent l'Histoire...</p>
             </div>
           )}
 
