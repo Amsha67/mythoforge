@@ -47,6 +47,7 @@ function App() {
     if (civilisation === "Grèce") return "grece";
     if (civilisation === "Égypte") return "egypte";
     if (civilisation === "Nordique") return "nordique";
+    return "";
   };
 
   return (
@@ -94,8 +95,12 @@ function App() {
 
             {loading && (
               <div className="loading-block">
-                <img src="https://cdn-icons-png.flaticon.com/512/148/148855.png" alt="chargement" className="spin" />
-                <p>Génération en cours...</p>
+                <img
+                  src="https://cdn-icons-png.flaticon.com/512/148/148855.png"
+                  alt="chargement"
+                  className="spin"
+                />
+                <p>Les Dieux écrivent l'Histoire...</p>
               </div>
             )}
 
@@ -112,4 +117,5 @@ function App() {
 }
 
 export default App;
+
 
