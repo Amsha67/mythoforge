@@ -1,4 +1,4 @@
-// App.jsx avec support CSS personnalisé et sablier intégré
+// App.jsx — Grèce antique permanent
 import React, { useState } from "react";
 import "./App.css";
 
@@ -43,73 +43,64 @@ function App() {
     }
   };
 
-  const getBackgroundClass = () => {
-    if (civilisation === "Grèce") return "grece";
-    if (civilisation === "Égypte") return "egypte";
-    if (civilisation === "Nordique") return "nordique";
-    return "";
-  };
-
   return (
-    <div className={`main-container ${getBackgroundClass()}`}>
+    <div className="main-container">
       <div className="content-wrapper">
         <h1 className="title">MythoForge</h1>
-        <div className="column-frame">
-          <div className="generator-box">
-            <h2>Crée ton aventure mythologique</h2>
+        <div className="generator-box">
+          <h2>Crée ton aventure mythologique</h2>
 
-            <label>Civilisation antique :</label>
-            <div className="button-row">
-              {["Grèce", "Égypte", "Nordique"].map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setCivilisation(c)}
-                  className={`stone-button ${civilisation === c ? "active" : ""}`}
-                >
-                  {c}
-                </button>
-              ))}
-            </div>
-
-            <label>Style :</label>
-            <div className="button-row">
-              {["Tragédie héroïque", "Épopée divine", "Romance interdite", "Complot cosmique"].map((s) => (
-                <button key={s} onClick={() => setStyle(s)} className="stone-button">
-                  {s}
-                </button>
-              ))}
-            </div>
-
-            <label>Éléments :</label>
-            <div className="button-row">
-              {["Héros maudit", "Monstre ancestral", "Artefact sacré", "Dieux en guerre"].map((e) => (
-                <button key={e} onClick={() => toggleElement(e)} className="stone-button">
-                  {e}
-                </button>
-              ))}
-            </div>
-
-            <button onClick={generateAdventure} className="stone-button main-action">
-              Générer l’histoire
-            </button>
-
-            {loading && (
-              <div className="loading-block">
-                <img
-                  src="https://cdn-icons-png.flaticon.com/512/148/148855.png"
-                  alt="chargement"
-                  className="spin"
-                />
-                <p>Les Dieux écrivent l'Histoire...</p>
-              </div>
-            )}
-
-            {!loading && generatedStory && (
-              <div className="story-block">
-                {generatedStory}
-              </div>
-            )}
+          <label>Civilisation antique :</label>
+          <div className="button-row">
+            {"Grèce Égypte Nordique".split(" ").map((c) => (
+              <button
+                key={c}
+                onClick={() => setCivilisation(c)}
+                className={`stone-button ${civilisation === c ? "active" : ""}`}
+              >
+                {c}
+              </button>
+            ))}
           </div>
+
+          <label>Style :</label>
+          <div className="button-row">
+            {["Tragédie héroïque", "Épopée divine", "Romance interdite", "Complot cosmique"].map((s) => (
+              <button key={s} onClick={() => setStyle(s)} className="stone-button">
+                {s}
+              </button>
+            ))}
+          </div>
+
+          <label>Éléments :</label>
+          <div className="button-row">
+            {["Héros maudit", "Monstre ancestral", "Artefact sacré", "Dieux en guerre"].map((e) => (
+              <button key={e} onClick={() => toggleElement(e)} className="stone-button">
+                {e}
+              </button>
+            ))}
+          </div>
+
+          <button onClick={generateAdventure} className="stone-button main-action">
+            Générer l’histoire
+          </button>
+
+          {loading && (
+            <div className="loading-block">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/148/148855.png"
+                alt="chargement"
+                className="spin"
+              />
+              <p>Les Dieux écrivent l’histoire...</p>
+            </div>
+          )}
+
+          {!loading && generatedStory && (
+            <div className="story-block">
+              {generatedStory}
+            </div>
+          )}
         </div>
       </div>
     </div>
