@@ -98,14 +98,16 @@ body {
 
 .story-block {
   margin-top: 1rem;
-  background-color: rgba(255, 255, 255, 0);
-  border: 2px solid #c2b280;
+  background-color: transparent; /* ✅ fond totalement transparent */
+  border: none;                  /* optionnel : supprime la bordure */
   padding: 1.2rem;
   border-radius: 10px;
   font-size: 1.1rem;
   line-height: 1.6;
   white-space: pre-wrap;
+  color: #fff; /* ou une autre couleur bien visible sur ton fond grec */
 }
+
 
 .decor-column {
   position: absolute;
