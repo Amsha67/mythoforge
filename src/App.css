@@ -1,87 +1,55 @@
-/* App.css */
+/* App.css mis à jour avec fond grec, marbre centré et colonnes */
 
-body, html {
+body {
   margin: 0;
   padding: 0;
+  background-image: url('/backgrounds/bg-grece.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   font-family: 'EB Garamond', serif;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-}
-
-.main-container {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-
-/* Fond dynamique selon la civilisation */
-.main-container.grece {
-  background-image: url("backgrounds/bg-grece.jpg"); /* remplace par le vrai chemin */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.main-container.egypte {
-  background-image: url("backgrounds/bg-egypte.jpg"); /* remplace par le vrai chemin */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.main-container.nordique {
-  background-image: url("backgrounds/bg-nordique.jpg"); /* remplace par le vrai chemin */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-/* Pour s'assurer que le fond couvre tout l'écran */
-.main-container {
   min-height: 100vh;
-  width: 100%;
 }
 
+.page-layout {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
 
-
-.content-wrapper {
+.main-container {
   max-width: 800px;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.92);
+  background-image: url('/textures/marble.jpg'); /* ta nouvelle texture */
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
   padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+  text-align: center;
 }
+
 
 .title {
-  font-size: 2.5rem;
   text-align: center;
-  margin-bottom: 1rem;
+  font-size: 2.5rem;
   font-weight: bold;
-}
-
-.column-frame {
-  border-left: 12px solid transparent;
-  border-right: 12px solid transparent;
-  background-image: url('/frames/greek-columns.png');
-  background-repeat: repeat-y;
-  background-position: left, right;
-  background-size: 12px auto;
-  padding: 2rem;
+  margin-bottom: 1rem;
 }
 
 .generator-box {
-  background-color: #fff8f0;
-  border: 2px solid #e3c48d;
-  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0);
+  padding: 1.5rem;
   border-radius: 12px;
-  animation: scrollFade 1.2s ease-in-out;
 }
 
 .button-row {
@@ -89,13 +57,16 @@ body, html {
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 1rem;
+  justify-content: center;
 }
 
 .stone-button {
-  background: #d6d3ce;
+  background-image: url('/textures/stone-button.jpg');
+  background-size: cover;
+  color: white;
   border: 1px solid #999;
-  padding: 0.4rem 1.2rem;
-  border-radius: 6px;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
   transition: transform 0.2s;
@@ -106,53 +77,49 @@ body, html {
 }
 
 .stone-button.active {
-  background-color: #c2b280;
+  border: 2px solid gold;
 }
 
 .main-action {
   background-color: #a67c52;
   color: white;
+  margin-top: 1rem;
 }
 
 .loading-block {
-  margin-top: 1rem;
   text-align: center;
+  margin-top: 1rem;
 }
 
-.spin {
-  width: 50px;
-  height: 50px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.loading-text {
+  font-style: italic;
+  color: #444;
 }
 
 .story-block {
   margin-top: 1rem;
-  background-color: #fdf6e3;
+  background-color: rgba(255, 255, 255, 0.95);
   border: 2px solid #c2b280;
-  padding: 1rem;
-  border-radius: 8px;
-  white-space: pre-wrap;
+  padding: 1.2rem;
+  border-radius: 10px;
   font-size: 1.1rem;
   line-height: 1.6;
-  animation: scrollFade 1.2s ease-in-out;
+  white-space: pre-wrap;
 }
 
-@keyframes scrollFade {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.decor-column {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  object-fit: contain;
+  z-index: 1;
+}
+
+.decor-column.left {
+  left: 0;
+}
+
+.decor-column.right {
+  right: 0;
 }

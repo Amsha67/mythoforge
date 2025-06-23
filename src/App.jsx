@@ -1,4 +1,4 @@
-// App.jsx — Grèce antique permanent
+// App.jsx avec colonnes décoratives et style antique
 import React, { useState } from "react";
 import "./App.css";
 
@@ -44,15 +44,24 @@ function App() {
   };
 
   return (
-    <div className="main-container">
-      <div className="content-wrapper">
+    <div className="page-layout">
+      <img src="/decor/column.png" 
+      alt="Colonne gauche" 
+      className="decor-column left" />
+      <img
+  src="/decor/column.png"
+  alt="Colonne droite"
+  className="decor-column right"
+/>
+
+<div className="main-container">
         <h1 className="title">MythoForge</h1>
         <div className="generator-box">
           <h2>Crée ton aventure mythologique</h2>
 
           <label>Civilisation antique :</label>
           <div className="button-row">
-            {"Grèce Égypte Nordique".split(" ").map((c) => (
+            {["Grèce", "Égypte", "Nordique"].map((c) => (
               <button
                 key={c}
                 onClick={() => setCivilisation(c)}
@@ -87,12 +96,7 @@ function App() {
 
           {loading && (
             <div className="loading-block">
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/148/148855.png"
-                alt="chargement"
-                className="spin"
-              />
-              <p>Les Dieux écrivent l’histoire...</p>
+              <p className="loading-text">🕰️Les Dieux écrivent l’histoire...</p>
             </div>
           )}
 
@@ -103,10 +107,10 @@ function App() {
           )}
         </div>
       </div>
+
+      <img src="/decor/column.png" alt="Colonne droite" className="decor-column right" />
     </div>
   );
 }
 
 export default App;
-
-
