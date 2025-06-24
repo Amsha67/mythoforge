@@ -1,19 +1,20 @@
-
-/* App.css mis à jour avec effets d'aura et animation hover par civilisation */
+/* App.css mis à jour avec fond dynamique et animations par civilisation */
 
 body {
   margin: 0;
   padding: 0;
-  background-image: url('/backgrounds/bg-grece.jpg'); /* Ou celle de la civilisation en cours */
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
-  background-size: contain;       /* 👈 Garde l'image entière visible */
-  background-position: center top;
-  background-attachment: fixed;   /* 👈 Permet un effet de fond fixe */
   font-family: 'EB Garamond', serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
-  overflow-y: auto;
+  transition: background-image 1s ease-in-out;
+  position: relative;
+  overflow: hidden;
 }
-
 
 body.greek {
   background-image: url('/backgrounds/bg-grece.jpg');
@@ -26,6 +27,83 @@ body.egypt {
 body.nordic {
   background-image: url('/backgrounds/bg-nordique.jpg');
 }
+
+/* Calques d’arrière-plan animés */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* === Grèce - Rayons dorés === */
+body.greek::after {
+  background: radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.2) 0%, transparent 60%);
+  animation: divineRays 5s ease-in-out infinite;
+  opacity: 1;
+}
+
+@keyframes divineRays {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.1) rotate(15deg);
+    opacity: 0.5;
+  }
+}
+
+/* === Égypte - Vague de chaleur === */
+body.egypt::after {
+  background: radial-gradient(circle at 60% 70%, rgba(255, 238, 170, 0.1) 0%, transparent 70%);
+  animation: egyptWaves 4s ease-in-out infinite;
+  opacity: 1;
+}
+
+@keyframes egyptWaves {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.15;
+  }
+  50% {
+    transform: scale(1.03);
+    opacity: 0.3;
+  }
+}
+
+/* === Nordique - Brume mouvante === */
+body.nordic::after {
+  background: radial-gradient(circle at center, rgba(200, 240, 255, 0.08) 0%, transparent 80%);
+  animation: nordicMist 6s ease-in-out infinite;
+  opacity: 1;
+}
+
+@keyframes nordicMist {
+  0% {
+    transform: scale(1) translateY(0);
+    opacity: 0.05;
+  }
+  50% {
+    transform: scale(1.02) translateY(-5px);
+    opacity: 0.12;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 0.05;
+  }
+}
+
+/* (Reste du style inchangé : layout, boutons, etc.) */
 
 .page-layout {
   position: relative;
@@ -64,7 +142,6 @@ body.nordic {
   border-radius: 12px;
 }
 
-/* Animation hover aura + mouvement */
 @keyframes auraHoverEffect {
   0% {
     box-shadow: 0 0 4px 2px currentColor;
@@ -94,17 +171,12 @@ body.nordic {
   animation: none;
 }
 
-/* Hover animé pour tous les boutons par civilisation */
 .stone-button.greek:hover:not(.active),
 .stone-button.egypt:hover:not(.active),
-.stone-button.nordic:hover:not(.active),
-.stone-button.main-action.greek:hover,
-.stone-button.main-action.egypt:hover,
-.stone-button.main-action.nordic:hover {
+.stone-button.nordic:hover:not(.active) {
   animation: auraHoverEffect 1.6s ease-in-out infinite;
 }
 
-/* Aura fixe pour les boutons sélectionnés */
 .stone-button.greek.active {
   box-shadow: 0 0 6px 3px rgba(255, 215, 0, 0.7);
   border: 1px solid gold;
@@ -166,4 +238,10 @@ body.nordic {
 
 .decor-column.right {
   right: 0;
+}
+body.animate-fx.greek::after,
+body.animate-fx.egypt::after,
+body.animate-fx.nordic::after {
+  animation: none;
+  animation: inherit;
 }
