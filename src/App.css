@@ -1,9 +1,7 @@
 
 /* App.css mis à jour avec effets d'aura et animation hover par civilisation */
 
-html, body {
-  height: 100%;
-  overflow-y: auto;
+body {
   margin: 0;
   padding: 0;
   background-size: cover;
@@ -53,9 +51,7 @@ body.nordic {
   padding: 2rem;
   z-index: 2;
   text-align: center;
-  overflow-y: auto;
 }
-
 
 .title {
   text-align: center;
