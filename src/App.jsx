@@ -68,7 +68,7 @@ function App() {
 
   const generateAdventure = async () => {
     const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
-    const imagePrompt = `Illustration mythologique de style ${civilisation}, représentant une scène de ${style.toLowerCase()} avec ${elements.join(", ")}`;
+    const imagePrompt = `Peinture impressionniste dans le style de Claude Monet, représentant une scène mythologique de la civilisation ${civilisation}, dans un style ${style.toLowerCase()}, incluant : ${elements.join(", ")}`;
 
     setLoading(true);
     setGeneratedStory("");
