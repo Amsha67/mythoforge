@@ -7,14 +7,12 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   font-family: 'EB Garamond', serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
   transition: background-image 1s ease-in-out;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden; /* on autorise le scroll vertical */
+  min-height: 100vh;
 }
+
 
 body.greek {
   background-image: url('/backgrounds/bg-grece.jpg');
@@ -114,6 +112,8 @@ body.nordic::after {
   align-items: center;
   padding: 2rem;
   box-sizing: border-box;
+  flex-direction: column;
+  margin: 0 auto;
 }
 
 .main-container {
