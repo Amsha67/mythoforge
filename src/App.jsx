@@ -6,10 +6,12 @@ function App() {
   const [style, setStyle] = useState("Tragédie héroïque");
   const [elements, setElements] = useState(["Héros maudit"]);
   const [generatedStory, setGeneratedStory] = useState("");
+  const [generatedImage, setGeneratedImage] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const body = document.body;
+
     const className =
       civilisation === "Grèce"
         ? "greek"
@@ -20,7 +22,9 @@ function App() {
     body.classList.remove("greek", "egypt", "nordic");
     body.classList.add(className);
 
+    // Ajoute l’effet visuel temporaire
     body.classList.add("animate-fx");
+
     const timeout = setTimeout(() => {
       body.classList.remove("animate-fx");
     }, 1000);
@@ -39,9 +43,36 @@ function App() {
     );
   };
 
+  const generateImage = async (prompt) => {
+    try {
+      const response = await fetch("https://api.openai.com/v1/images/generations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          prompt,
+          n: 1,
+          size: "512x512",
+        }),
+      });
+
+      const data = await response.json();
+      setGeneratedImage(data.data?.[0]?.url || "");
+    } catch (error) {
+      console.error("Erreur génération image", error);
+      setGeneratedImage("");
+    }
+  };
+
   const generateAdventure = async () => {
     const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
+    const imagePrompt = `Illustration mythologique de style ${civilisation}, représentant une scène de ${style.toLowerCase()} avec ${elements.join(", ")}`;
+
     setLoading(true);
+    setGeneratedStory("");
+    setGeneratedImage("");
 
     try {
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -58,38 +89,16 @@ function App() {
       });
 
       const data = await response.json();
-      setGeneratedStory(data.choices?.[0]?.message?.content || "❌ Erreur : aucune histoire reçue.");
+      const story = data.choices?.[0]?.message?.content || "❌ Erreur : aucune histoire reçue.";
+      setGeneratedStory(story);
+
+      await generateImage(imagePrompt);
     } catch (error) {
       setGeneratedStory("❌ Erreur lors de la génération.");
     } finally {
       setLoading(false);
     }
   };
-
-  const generateImage = async (prompt) => {
-  try {
-    const response = await fetch("https://api.openai.com/v1/images/generations", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        prompt,
-        n: 1,
-        size: "512x512"
-      }),
-    });
-
-    const data = await response.json();
-    setGeneratedImage(data.data?.[0]?.url || "");
-  } catch (error) {
-    console.error("Erreur génération image", error);
-    setGeneratedImage("");
-  }
-};
-
-
 
   const getAuraClass = () => {
     if (civilisation === "Grèce") return "greek";
@@ -144,7 +153,10 @@ function App() {
             ))}
           </div>
 
-          <button onClick={generateAdventure} className={`stone-button main-action ${getAuraClass()}`}>
+          <button
+            onClick={generateAdventure}
+            className={`stone-button main-action ${getAuraClass()}`}
+          >
             Générer l’histoire
           </button>
 
@@ -158,15 +170,17 @@ function App() {
             <div className="story-block">
               {generatedStory}
             </div>
-            
           )}
-    {!loading && generatedImage && (
-  <div className="image-block">
-    <img src={generatedImage} alt="Illustration IA" className="generated-image" />
-  </div>
-)}
 
-
+          {!loading && generatedImage && (
+            <div className="image-block">
+              <img
+                src={generatedImage}
+                alt="Illustration IA"
+                className="generated-image"
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
