@@ -43,29 +43,36 @@ function App() {
     );
   };
 
-  const generateImage = async (prompt) => {console.log("Image generation response:", data);
+  const generateImage = async (prompt) => {
+  try {
+    const response = await fetch("https://api.openai.com/v1/images/generations", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        prompt,
+        n: 1,
+        size: "512x512",
+      }),
+    });
 
-    try {
-      const response = await fetch("https://api.openai.com/v1/images/generations", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          prompt,
-          n: 1,
-          size: "512x512",
-        }),
-      });
-
-      const data = await response.json();
-      setGeneratedImage(data.data?.[0]?.url || "");
-    } catch (error) {
-      console.error("Erreur génération image", error);
-      setGeneratedImage("");
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Erreur HTTP:", response.status, errorText);
+      throw new Error(`Erreur OpenAI image: ${response.status}`);
     }
-  };
+
+    const data = await response.json();
+    console.log("✅ Image générée :", data);
+    setGeneratedImage(data.data?.[0]?.url || "");
+  } catch (error) {
+    console.error("Erreur dans generateImage:", error);
+    setGeneratedImage("");
+  }
+};
+
 
   const generateAdventure = async () => {
     const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
