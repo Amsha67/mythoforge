@@ -104,17 +104,13 @@ body.nordic::after {
 /* (Reste du style inchangé : layout, boutons, etc.) */
 
 .page-layout {
-  position: relative;
   width: 100%;
-  max-width: 1200px;
   display: flex;
   justify-content: center;
-  align-items: center;
   padding: 2rem;
   box-sizing: border-box;
-  flex-direction: column;
-  margin: 0 auto;
 }
+
 
 .main-container {
   max-width: 800px;
