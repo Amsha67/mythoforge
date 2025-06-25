@@ -34,6 +34,20 @@ function App() {
       body.classList.remove("animate-fx");
     };
   }, [civilisation]);
+  
+  const getStyleFromCivilisation = () => {
+  switch (civilisation) {
+    case "Grèce":
+      return "inspiré d'une fresque antique grecque, avec des couleurs terreuses, dorées et des motifs classiques";
+    case "Égypte":
+      return "dans le style de l'art mural égyptien ancien, avec des formes stylisées et des couleurs ocres, bleues et dorées";
+    case "Nordique":
+      return "dans le style des sagas nordiques, avec une ambiance froide, des runes, et un style inspiré des gravures sur pierre ou bois viking";
+    default:
+      return "dans un style mythologique classique";
+  }
+};
+
 
   const toggleElement = (element) => {
     setElements((prev) =>
@@ -100,7 +114,8 @@ function App() {
 
     // 🖼️ Ensuite, générer l’image à partir de l’histoire
     const storySummary = story.slice(0, 250); // tronque à 250 caractères
-const imagePrompt = `Illustration mythologique dans le style du jeu "Hadès", représentant cette scène : ${storySummary}`;
+const imagePrompt = `Illustration mythologique ${getStyleFromCivilisation()}, représentant une scène avec ${elements.join(", ")}.`;
+
 
     generateImage(imagePrompt);
   } catch (error) {
