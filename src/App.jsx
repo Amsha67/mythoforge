@@ -99,7 +99,9 @@ function App() {
     setGeneratedStory(story);
 
     // 🖼️ Ensuite, générer l’image à partir de l’histoire
-    const imagePrompt = `Réalise une illustration détaillée qui reproduit le style du jeu vidéo "Hadès", en représentant la scène suivante : ${story}`;
+    const storySummary = story.slice(0, 250); // tronque à 250 caractères
+const imagePrompt = `Illustration mythologique dans le style du jeu "Hadès", représentant cette scène : ${storySummary}`;
+
     generateImage(imagePrompt);
   } catch (error) {
     console.error("Erreur lors de la génération de l'histoire :", error);
