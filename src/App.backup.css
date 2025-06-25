@@ -7,14 +7,12 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   font-family: 'EB Garamond', serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
   transition: background-image 1s ease-in-out;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden; /* on autorise le scroll vertical */
+  min-height: 100vh;
 }
+
 
 body.greek {
   background-image: url('/backgrounds/bg-grece.jpg');
@@ -45,80 +43,21 @@ body::after {
   pointer-events: none;
 }
 
-/* === Grèce - Rayons dorés === */
-body.greek::after {
-  background: radial-gradient(circle at 50% 20%, rgba(255, 215, 0, 0.2) 0%, transparent 60%);
-  animation: divineRays 5s ease-in-out infinite;
-  opacity: 1;
-}
-
-@keyframes divineRays {
-  0%, 100% {
-    transform: scale(1) rotate(0deg);
-    opacity: 0.2;
-  }
-  50% {
-    transform: scale(1.1) rotate(15deg);
-    opacity: 0.5;
-  }
-}
-
-/* === Égypte - Vague de chaleur === */
-body.egypt::after {
-  background: radial-gradient(circle at 60% 70%, rgba(255, 238, 170, 0.1) 0%, transparent 70%);
-  animation: egyptWaves 4s ease-in-out infinite;
-  opacity: 1;
-}
-
-@keyframes egyptWaves {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.15;
-  }
-  50% {
-    transform: scale(1.03);
-    opacity: 0.3;
-  }
-}
-
-/* === Nordique - Brume mouvante === */
-body.nordic::after {
-  background: radial-gradient(circle at center, rgba(200, 240, 255, 0.08) 0%, transparent 80%);
-  animation: nordicMist 6s ease-in-out infinite;
-  opacity: 1;
-}
-
-@keyframes nordicMist {
-  0% {
-    transform: scale(1) translateY(0);
-    opacity: 0.05;
-  }
-  50% {
-    transform: scale(1.02) translateY(-5px);
-    opacity: 0.12;
-  }
-  100% {
-    transform: scale(1) translateY(0);
-    opacity: 0.05;
-  }
-}
-
 /* (Reste du style inchangé : layout, boutons, etc.) */
 
 .page-layout {
-  position: relative;
   width: 100%;
-  max-width: 1200px;
   display: flex;
   justify-content: center;
-  align-items: center;
   padding: 2rem;
   box-sizing: border-box;
 }
 
+
 .main-container {
   max-width: 800px;
   width: 100%;
+  margin: 0 auto; /* <-- clé pour centrage horizontal */
   background-image: url('/textures/marble.jpg');
   background-size: cover;
   background-repeat: no-repeat;
@@ -127,6 +66,7 @@ body.nordic::after {
   padding: 2rem;
   z-index: 2;
   text-align: center;
+
 }
 
 .title {
@@ -142,6 +82,8 @@ body.nordic::after {
   border-radius: 12px;
 }
 
+
+/* === Animation de survol commune === */
 @keyframes auraHoverEffect {
   0% {
     box-shadow: 0 0 4px 2px currentColor;
@@ -157,7 +99,25 @@ body.nordic::after {
   }
 }
 
+@keyframes buttonClickShake {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(-2px); }
+  50%  { transform: translateX(2px); }
+  75%  { transform: translateX(-2px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes buttonFloat {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+
+/* === Boutons === */
 .stone-button {
+  animation: buttonClickShake 0.2s ease;
+  
+transition: transform 0.4s ease, box-shadow 0.4s ease, color 0.4s ease, border 0.4s ease;
   background-image: url('/textures/stone-button.jpg');
   background-size: cover;
   color: white;
@@ -168,38 +128,79 @@ body.nordic::after {
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  animation: none;
+}
+.stone-button:active {
+  animation: buttonClickShake 0.2s ease !important;
+ transform: scale(0.96);
 }
 
-.stone-button.greek:hover:not(.active),
-.stone-button.egypt:hover:not(.active),
-.stone-button.nordic:hover:not(.active) {
-  animation: auraHoverEffect 1.6s ease-in-out infinite;
+
+/* === Classes d’aura par civilisation === */
+.stone-button.greek {
+  --aura-color: gold;
+}
+.stone-button.egypt {
+  --aura-color: hsla(155, 100%, 50%, 1);
+}
+.stone-button.nordic {
+  --aura-color: rgba(120, 220, 255, 1);
 }
 
+/* === Animation au survol pour TOUS les boutons === */
+.stone-button:hover {
+  animation: auraHoverEffectFixed 1.4s ease-in-out infinite;
+  box-shadow: 0 0 12px 4px var(--aura-color); /* aura visible dès survol */
+  border: 1px solid var(--aura-color);
+  color: var(--aura-color);
+}
+
+/* === Styles actifs === */
 .stone-button.greek.active {
   box-shadow: 0 0 6px 3px rgba(255, 215, 0, 0.7);
   border: 1px solid gold;
-  color: #ffd700;
+  color: gold;
 }
-
 .stone-button.egypt.active {
   box-shadow: 0 0 6px 3px hsla(155, 88%, 44%, 0.6);
   border: 1px solid hsla(155, 100%, 37%, 0.8);
   color: hsla(155, 100%, 50%, 1);
 }
-
 .stone-button.nordic.active {
   box-shadow: 0 0 6px 3px rgba(173, 216, 230, 0.6);
   border: 1px solid rgba(135, 206, 250, 0.9);
   color: rgba(120, 220, 255, 1);
 }
 
+.stone-button.greek:hover {
+  animation: buttonFloat 1.6s ease-in-out infinite;
+  box-shadow: 0 0 14px 5px rgba(255, 215, 0, 0.7);
+  border: 1px solid gold;
+  color: gold;
+}
+
+.stone-button.egypt:hover {
+  animation: buttonFloat 1.6s ease-in-out infinite;
+  box-shadow: 0 0 14px 5px rgba(50, 220, 180, 0.7);
+  border: 1px solid rgba(50, 220, 180, 1);
+  color: rgba(50, 220, 180, 1);
+}
+
+.stone-button.nordic:hover {
+  animation: buttonFloat 1.6s ease-in-out infinite;
+  box-shadow: 0 0 14px 5px rgba(120, 220, 255, 0.7);
+  border: 1px solid rgba(120, 220, 255, 1);
+  color: rgba(120, 220, 255, 1);
+}
+
+
+
+/* === Bouton principal "Générer" === */
 .main-action {
   background-color: #a67c52;
   color: white;
   margin-top: 1rem;
 }
+
 
 .loading-block {
   text-align: center;
@@ -223,25 +224,4 @@ body.nordic::after {
   color: #fff;
 }
 
-.decor-column {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 60px;
-  object-fit: contain;
-  z-index: 1;
-}
 
-.decor-column.left {
-  left: 0;
-}
-
-.decor-column.right {
-  right: 0;
-}
-body.animate-fx.greek::after,
-body.animate-fx.egypt::after,
-body.animate-fx.nordic::after {
-  animation: none;
-  animation: inherit;
-}

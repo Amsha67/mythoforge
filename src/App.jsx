@@ -9,40 +9,31 @@ function App() {
   const [generatedStory, setGeneratedStory] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Appliquer classe selon civilisation + lancer une animation spécifique
   useEffect(() => {
-    const body = document.body;
+  const body = document.body;
 
-    // Nettoyage
-    body.classList.remove("greek", "egypt", "nordic", "greek-anim", "egypt-anim", "nordic-anim");
+  const className = civilisation === "Grèce"
+    ? "greek"
+    : civilisation === "Égypte"
+    ? "egypt"
+    : "nordic";
 
-    // Ajout des classes
-    const baseClass = getCivilisationClass(civilisation);
-    body.classList.add(baseClass);            // fond
-    body.classList.add(`${baseClass}-anim`);  // animation
+  body.classList.remove("greek", "egypt", "nordic");
+  body.classList.add(className);
 
-    // Retire l'animation après 1s pour pouvoir rejouer plus tard
-    const timeout = setTimeout(() => {
-      body.classList.remove(`${baseClass}-anim`);
-    }, 1000);
+  // Ajoute l’effet visuel temporaire
+  body.classList.add("animate-fx");
 
-    return () => clearTimeout(timeout);
-  }, [civilisation]);
+  const timeout = setTimeout(() => {
+    body.classList.remove("animate-fx");
+  }, 1000); // doit durer plus que l'animation CSS
 
-  const getCivilisationClass = (civ) => {
-    if (civ === "Grèce") return "greek";
-    if (civ === "Égypte") return "egypt";
-    if (civ === "Nordique") return "nordic";
-    return "";
+  return () => {
+    clearTimeout(timeout);
+    body.classList.remove("animate-fx");
   };
+}, [civilisation]);
 
-  const getAuraClass = () => getCivilisationClass(civilisation);
-
-  const toggleElement = (element) => {
-    setElements((prev) =>
-      prev.includes(element) ? prev.filter((e) => e !== element) : [...prev, element]
-    );
-  };
 
   const generateAdventure = async () => {
     const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
@@ -71,6 +62,13 @@ function App() {
     }
   };
 
+  const getAuraClass = () => {
+    if (civilisation === "Grèce") return "greek";
+    if (civilisation === "Égypte") return "egypt";
+    if (civilisation === "Nordique") return "nordic";
+    return "";
+  };
+
   return (
     <div className="page-layout">
       <div className="main-container">
@@ -82,12 +80,13 @@ function App() {
           <div className="button-row">
             {["Grèce", "Égypte", "Nordique"].map((c) => (
               <button
-                key={c}
-                onClick={() => setCivilisation(c)}
-                className={`stone-button ${civilisation === c ? getAuraClass() + " active" : ""}`}
-              >
-                {c}
-              </button>
+  onClick={() => setCivilisation(c)}
+  className={`stone-button ${civilisation === c ? getAuraClass() + " active" : getAuraClass()}`}
+>
+  {c}
+</button>
+
+
             ))}
           </div>
 
@@ -97,7 +96,8 @@ function App() {
               <button
                 key={s}
                 onClick={() => setStyle(s)}
-                className={`stone-button ${style === s ? getAuraClass() + " active" : ""}`}
+                className={`stone-button ${getAuraClass()} ${style === s ? "active" : ""}`}
+
               >
                 {s}
               </button>
@@ -110,7 +110,8 @@ function App() {
               <button
                 key={e}
                 onClick={() => toggleElement(e)}
-                className={`stone-button ${elements.includes(e) ? getAuraClass() + " active" : ""}`}
+                className={`stone-button ${getAuraClass()} ${elements.includes(e) ? "active" : ""}`}
+
               >
                 {e}
               </button>
@@ -128,7 +129,9 @@ function App() {
           )}
 
           {!loading && generatedStory && (
-            <div className="story-block">{generatedStory}</div>
+            <div className="story-block">
+              {generatedStory}
+            </div>
           )}
         </div>
       </div>
