@@ -76,7 +76,7 @@ function App() {
 
   const generateAdventure = async () => {
     const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
-    const imagePrompt = `Peinture en style bas-relief antique, représentant une scène mythologique de la civilisation ${civilisation}, dans un style ${style.toLowerCase()}, incluant : ${elements.join(", ")}`;
+    const imagePrompt = `Illustration qui s'inspire du style d'illustration du jeux vidéo Hades, représentant une scène mythologique de la civilisation ${civilisation}, dans un style ${style.toLowerCase()}, incluant : ${elements.join(", ")}`;
 
     setLoading(true);
     setGeneratedStory("");
