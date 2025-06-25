@@ -256,5 +256,37 @@ transition: transform 0.4s ease, box-shadow 0.4s ease, color 0.4s ease, border 0
   box-shadow: 0 0 20px rgba(0,0,0,0.4);
 }
 
+@keyframes parchmentReveal {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.8) translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+  }
+}
+
+.story-block {
+  font-family: 'EB Garamond', serif;
+margin-top: 1rem;
+  padding: 1.2rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: #fff;
+
+  background-image: url('/textures/parchemin.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
+
+  animation: parchmentReveal 0.8s ease-out;
+  transform-origin: top center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+
 
 
