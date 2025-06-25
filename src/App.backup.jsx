@@ -1,4 +1,3 @@
-// App.jsx
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
@@ -10,30 +9,35 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-  const body = document.body;
+    const body = document.body;
+    const className =
+      civilisation === "Grèce"
+        ? "greek"
+        : civilisation === "Égypte"
+        ? "egypt"
+        : "nordic";
 
-  const className = civilisation === "Grèce"
-    ? "greek"
-    : civilisation === "Égypte"
-    ? "egypt"
-    : "nordic";
+    body.classList.remove("greek", "egypt", "nordic");
+    body.classList.add(className);
 
-  body.classList.remove("greek", "egypt", "nordic");
-  body.classList.add(className);
+    body.classList.add("animate-fx");
+    const timeout = setTimeout(() => {
+      body.classList.remove("animate-fx");
+    }, 1000);
 
-  // Ajoute l’effet visuel temporaire
-  body.classList.add("animate-fx");
+    return () => {
+      clearTimeout(timeout);
+      body.classList.remove("animate-fx");
+    };
+  }, [civilisation]);
 
-  const timeout = setTimeout(() => {
-    body.classList.remove("animate-fx");
-  }, 1000); // doit durer plus que l'animation CSS
-
-  return () => {
-    clearTimeout(timeout);
-    body.classList.remove("animate-fx");
+  const toggleElement = (element) => {
+    setElements((prev) =>
+      prev.includes(element)
+        ? prev.filter((e) => e !== element)
+        : [...prev, element]
+    );
   };
-}, [civilisation]);
-
 
   const generateAdventure = async () => {
     const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
@@ -80,13 +84,12 @@ function App() {
           <div className="button-row">
             {["Grèce", "Égypte", "Nordique"].map((c) => (
               <button
-  onClick={() => setCivilisation(c)}
-  className={`stone-button ${civilisation === c ? getAuraClass() + " active" : getAuraClass()}`}
->
-  {c}
-</button>
-
-
+                key={c}
+                onClick={() => setCivilisation(c)}
+                className={`stone-button ${getAuraClass()} ${civilisation === c ? "active" : ""}`}
+              >
+                {c}
+              </button>
             ))}
           </div>
 
@@ -97,7 +100,6 @@ function App() {
                 key={s}
                 onClick={() => setStyle(s)}
                 className={`stone-button ${getAuraClass()} ${style === s ? "active" : ""}`}
-
               >
                 {s}
               </button>
@@ -111,7 +113,6 @@ function App() {
                 key={e}
                 onClick={() => toggleElement(e)}
                 className={`stone-button ${getAuraClass()} ${elements.includes(e) ? "active" : ""}`}
-
               >
                 {e}
               </button>
