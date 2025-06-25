@@ -9,31 +9,38 @@ function App() {
   const [generatedStory, setGeneratedStory] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Appliquer classe de fond dynamique + effet halo
+  // Appliquer classe selon civilisation + lancer une animation spécifique
   useEffect(() => {
-    const className = civilisation === "Grèce"
-      ? "greek"
-      : civilisation === "Égypte"
-      ? "egypt"
-      : "nordic";
+    const body = document.body;
 
-    document.body.classList.remove("greek", "egypt", "nordic");
-    document.body.classList.add(className);
+    // Nettoyage
+    body.classList.remove("greek", "egypt", "nordic", "greek-anim", "egypt-anim", "nordic-anim");
 
-    // Effet halo divin
-    document.body.classList.add("animate-aura");
+    // Ajout des classes
+    const baseClass = getCivilisationClass(civilisation);
+    body.classList.add(baseClass);            // fond
+    body.classList.add(`${baseClass}-anim`);  // animation
+
+    // Retire l'animation après 1s pour pouvoir rejouer plus tard
     const timeout = setTimeout(() => {
-      document.body.classList.remove("animate-aura");
-    }, 1200);
+      body.classList.remove(`${baseClass}-anim`);
+    }, 1000);
 
     return () => clearTimeout(timeout);
   }, [civilisation]);
 
+  const getCivilisationClass = (civ) => {
+    if (civ === "Grèce") return "greek";
+    if (civ === "Égypte") return "egypt";
+    if (civ === "Nordique") return "nordic";
+    return "";
+  };
+
+  const getAuraClass = () => getCivilisationClass(civilisation);
+
   const toggleElement = (element) => {
     setElements((prev) =>
-      prev.includes(element)
-        ? prev.filter((e) => e !== element)
-        : [...prev, element]
+      prev.includes(element) ? prev.filter((e) => e !== element) : [...prev, element]
     );
   };
 
@@ -62,13 +69,6 @@ function App() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const getAuraClass = () => {
-    if (civilisation === "Grèce") return "greek";
-    if (civilisation === "Égypte") return "egypt";
-    if (civilisation === "Nordique") return "nordic";
-    return "";
   };
 
   return (
@@ -128,9 +128,7 @@ function App() {
           )}
 
           {!loading && generatedStory && (
-            <div className="story-block">
-              {generatedStory}
-            </div>
+            <div className="story-block">{generatedStory}</div>
           )}
         </div>
       </div>
