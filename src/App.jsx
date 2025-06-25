@@ -75,38 +75,40 @@ function App() {
 
 
   const generateAdventure = async () => {
-    const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
-    const imagePrompt = `Donne toi un prompt pour réaliser une illustration détaillée qui reproduit le style du jeux vidéo "Hadès", représentant une scène mythologique de la civilisation ${civilisation}, dans un style ${style.toLowerCase()}, incluant : ${elements.join(", ")}`;
+  const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
+  setLoading(true);
+  setGeneratedStory("");
+  setGeneratedImage(""); // <-- Réinitialiser l’image précédente
 
-    setLoading(true);
-    setGeneratedStory("");
-    setGeneratedImage("");
+  try {
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4",
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.7,
+      }),
+    });
 
-    try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-4",
-          messages: [{ role: "user", content: prompt }],
-          temperature: 0.7,
-        }),
-      });
+    const data = await response.json();
+    const story = data.choices?.[0]?.message?.content || "❌ Erreur : aucune histoire reçue.";
+    setGeneratedStory(story);
 
-      const data = await response.json();
-      const story = data.choices?.[0]?.message?.content || "❌ Erreur : aucune histoire reçue.";
-      setGeneratedStory(story);
+    // 🖼️ Ensuite, générer l’image à partir de l’histoire
+    const imagePrompt = `Réalise une illustration détaillée qui reproduit le style du jeu vidéo "Hadès", en représentant la scène suivante : ${story}`;
+    generateImage(imagePrompt);
+  } catch (error) {
+    console.error("Erreur lors de la génération de l'histoire :", error);
+    setGeneratedStory("❌ Erreur lors de la génération.");
+  } finally {
+    setLoading(false);
+  }
+};
 
-      await generateImage(imagePrompt);
-    } catch (error) {
-      setGeneratedStory("❌ Erreur lors de la génération.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const getAuraClass = () => {
     if (civilisation === "Grèce") return "greek";
