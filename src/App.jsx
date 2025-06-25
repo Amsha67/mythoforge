@@ -139,9 +139,9 @@ const imagePrompt = `Illustration mythologique ${getStyleFromCivilisation()}, re
       <div className="main-container">
         <h1 className="title">MythoForge</h1>
         <div className="generator-box">
-          <h2>Crée ton aventure mythologique</h2>
+          <h2 className="hero-subtitle">Crée ton aventure mythologique !</h2>
 
-          <label>Civilisation antique :</label>
+   <h3 className="subtitle">Civilisation antique :</h3>
           <div className="button-row">
             {["Grèce", "Égypte", "Nordique"].map((c) => (
               <button
@@ -154,7 +154,8 @@ const imagePrompt = `Illustration mythologique ${getStyleFromCivilisation()}, re
             ))}
           </div>
 
-          <label>Style :</label>
+          <h3 className="subtitle">Style :</h3>
+
           <div className="button-row">
             {["Tragédie héroïque", "Épopée divine", "Romance interdite", "Complot cosmique"].map((s) => (
               <button
@@ -167,7 +168,8 @@ const imagePrompt = `Illustration mythologique ${getStyleFromCivilisation()}, re
             ))}
           </div>
 
-          <label>Éléments clés :</label>
+          <h3 className="subtitle">Elementes clés :</h3>
+
           <div className="button-row">
             {["Héros maudit", "Monstre ancestral", "Artefact sacré", "Dieux en guerre"].map((e) => (
               <button
