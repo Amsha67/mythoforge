@@ -43,7 +43,8 @@ function App() {
     );
   };
 
-  const generateImage = async (prompt) => {
+  const generateImage = async (prompt) => {console.log("Image generation response:", data);
+
     try {
       const response = await fetch("https://api.openai.com/v1/images/generations", {
         method: "POST",
