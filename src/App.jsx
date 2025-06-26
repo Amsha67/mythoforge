@@ -1,30 +1,30 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
-function App() {
-  const [civilisation, setCivilisation] = useState("Égypte");
-  const [style, setStyle] = useState("Tragédie héroïque");
-  const [elements, setElements] = useState(["Héros maudit"]);
-  const [fullStory, setFullStory] = useState("");        // Texte complet (reçu)
-  const [displayedStory, setDisplayedStory] = useState(""); // Texte affiché (machine à écrire)
-  const [generatedImage, setGeneratedImage] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [lightningClass, setLightningClass] = useState("lightning-appear");
-  const StoryDisplay = ({ story }) => {
+// ✅ Composant isolé pour éviter les re-renders de .main-container
+const StoryDisplay = React.memo(({ story }) => {
   return (
     <div className="story-block">
       {story}
     </div>
   );
-};
+});
 
-  // Animation d'apparition du titre
+function App() {
+  const [civilisation, setCivilisation] = useState("Égypte");
+  const [style, setStyle] = useState("Tragédie héroïque");
+  const [elements, setElements] = useState(["Héros maudit"]);
+  const [fullStory, setFullStory] = useState("");
+  const [displayedStory, setDisplayedStory] = useState("");
+  const [generatedImage, setGeneratedImage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [lightningClass, setLightningClass] = useState("lightning-appear");
+
   useEffect(() => {
     const timeout = setTimeout(() => setLightningClass(""), 2000);
     return () => clearTimeout(timeout);
   }, []);
 
-  // Changement de fond selon civilisation
   useEffect(() => {
     const body = document.body;
     const className =
@@ -34,8 +34,8 @@ function App() {
 
     document.body.classList.remove("greek", "egypt", "nordic");
     document.body.classList.add(className);
-    body.classList.add("animate-fx");
 
+    body.classList.add("animate-fx");
     const timeout = setTimeout(() => body.classList.remove("animate-fx"), 1000);
     return () => {
       clearTimeout(timeout);
@@ -43,28 +43,26 @@ function App() {
     };
   }, [civilisation]);
 
-  // Affichage "machine à écrire"
+  // Effet machine à écrire
   useEffect(() => {
     if (!fullStory) return;
 
     let i = 0;
-    setDisplayedStory(""); // reset avant la nouvelle
-
+    setDisplayedStory("");
     const interval = setInterval(() => {
-      setDisplayedStory((prev) => {
+      setDisplayedStory(prev => {
         const next = prev + fullStory[i];
         i++;
         if (i >= fullStory.length) clearInterval(interval);
         return next;
       });
-    }, 20); // ⏱️ vitesse : 20ms par caractère
-
+    }, 20);
     return () => clearInterval(interval);
   }, [fullStory]);
 
   const toggleElement = (element) => {
-    setElements((prev) =>
-      prev.includes(element) ? prev.filter((e) => e !== element) : [...prev, element]
+    setElements(prev =>
+      prev.includes(element) ? prev.filter(e => e !== element) : [...prev, element]
     );
   };
 
@@ -99,7 +97,6 @@ function App() {
 
   const generateAdventure = async () => {
     const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
-
     setLoading(true);
     setFullStory("");
     setDisplayedStory("");
@@ -125,7 +122,10 @@ function App() {
 
       while (true) {
         const { value, done } = await reader.read();
-        if (done) break;
+        if (done) {
+          setLoading(false);
+          return;
+        }
 
         const chunk = decoder.decode(value);
         const lines = chunk.split("\n").filter(line => line.trim().startsWith("data: "));
@@ -140,7 +140,7 @@ function App() {
           const parsed = JSON.parse(jsonStr);
           const token = parsed.choices?.[0]?.delta?.content;
           if (token) {
-            setFullStory(prev => prev + token); // stocke l’histoire complète
+            setFullStory(prev => prev + token);
           }
         }
       }
@@ -233,8 +233,7 @@ function App() {
             </div>
           )}
 
-         {displayedStory && <StoryDisplay story={displayedStory} />}
-
+          {displayedStory && <StoryDisplay story={displayedStory} />}
 
           {generatedImage && (
             <div className="image-block">
