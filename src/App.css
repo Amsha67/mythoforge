@@ -1,50 +1,31 @@
 /* App.css mis à jour avec fond dynamique et animations par civilisation */
 
-body {
-  color: #2c1e10; /* brun antique élégant */
-background-blend-mode: lighten;
-background-attachment: scroll;
-  margin: 0;
-  padding: 0;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  font-family: 'EB Garamond', serif;
-transition: none;
- position: relative;
-  overflow-x: hidden; /* on autorise le scroll vertical */
-  min-height: 100vh;
-}
-
-
-body.greek {
-  background-image: url('/backgrounds/bg-grece.jpg');
-}
-
-body.egypt {
-  background-image: url('/backgrounds/bg-egypte.jpg');
-}
-
-body.nordic {
-  background-image: url('/backgrounds/bg-nordique.jpg');
-}
-
-/* Calques d’arrière-plan animés */
-body::before,
-body::after {
+body::before {
   content: "";
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   width: 100vw;
   height: 100vh;
   background-size: cover;
-  background-position: center;
   background-repeat: no-repeat;
+  background-position: center;
   z-index: -1;
-  opacity: 0;
   pointer-events: none;
+  transition: background-image 0.8s ease-in-out;
 }
+
+/* Fond par civilisation */
+body.greek::before {
+  background-image: url('/backgrounds/bg-grece.jpg');
+}
+body.egypt::before {
+  background-image: url('/backgrounds/bg-egypte.jpg');
+}
+body.nordic::before {
+  background-image: url('/backgrounds/bg-nordique.jpg');
+}
+
+
 
 /* (Reste du style inchangé : layout, boutons, etc.) */
 
