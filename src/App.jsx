@@ -141,22 +141,25 @@ try {
       }
     }
   }
-} catch (err) {
-  console.error("Erreur lors de la génération :", err);
-  setGeneratedStory("❌ Erreur lors de la génération.");
-}
+  } catch (err) {
+    console.error("Erreur lors de la génération :", err);
+    setGeneratedStory("❌ Erreur lors de la génération.");
+  }
 
+  setLoading(false); // ← Facultatif, à appeler après le stream si besoin
+}; // ✅ ← FIN de la fonction generateAdventure
 
+const getAuraClass = () => {
+  if (civilisation === "Grèce") return "greek";
+  if (civilisation === "Égypte") return "egypt";
+  if (civilisation === "Nordique") return "nordic";
+  return "";
+};
 
-  const getAuraClass = () => {
-    if (civilisation === "Grèce") return "greek";
-    if (civilisation === "Égypte") return "egypt";
-    if (civilisation === "Nordique") return "nordic";
-    return "";
-  };
+return (
+  <div className="page-layout">
+    ...
 
-  return (
-    <div className="page-layout">
       <div className="main-container">
         <h1 className={`title ${lightningClass}`}>MythoForge</h1>
 
