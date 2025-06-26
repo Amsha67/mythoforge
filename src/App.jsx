@@ -5,64 +5,59 @@ function App() {
   const [civilisation, setCivilisation] = useState("Égypte");
   const [style, setStyle] = useState("Tragédie héroïque");
   const [elements, setElements] = useState(["Héros maudit"]);
-  const [generatedStory, setGeneratedStory] = useState("");
+  const [fullStory, setFullStory] = useState("");        // Texte complet (reçu)
+  const [displayedStory, setDisplayedStory] = useState(""); // Texte affiché (machine à écrire)
   const [generatedImage, setGeneratedImage] = useState("");
   const [loading, setLoading] = useState(false);
   const [lightningClass, setLightningClass] = useState("lightning-appear");
 
+  // Animation d'apparition du titre
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setLightningClass(""); // Supprime l'effet après l'animation
-    }, 2000); // Durée identique à l'animation CSS
-
+    const timeout = setTimeout(() => setLightningClass(""), 2000);
     return () => clearTimeout(timeout);
   }, []);
 
+  // Changement de fond selon civilisation
   useEffect(() => {
     const body = document.body;
-
     const className =
-      civilisation === "Grèce"
-        ? "greek"
-        : civilisation === "Égypte"
-          ? "egypt"
-          : "nordic";
+      civilisation === "Grèce" ? "greek"
+      : civilisation === "Égypte" ? "egypt"
+      : "nordic";
 
     document.body.classList.remove("greek", "egypt", "nordic");
     document.body.classList.add(className);
-
-    // Ajoute l’effet visuel temporaire
     body.classList.add("animate-fx");
 
-    const timeout = setTimeout(() => {
-      body.classList.remove("animate-fx");
-    }, 1000);
-
+    const timeout = setTimeout(() => body.classList.remove("animate-fx"), 1000);
     return () => {
       clearTimeout(timeout);
       body.classList.remove("animate-fx");
     };
   }, [civilisation]);
 
-  const getStyleFromCivilisation = () => {
-    switch (civilisation) {
-      case "Grèce":
-        return "inspiré d'une fresque antique grecque, avec des couleurs terreuses, dorées et des motifs classiques";
-      case "Égypte":
-        return "dans le style de l'art mural égyptien ancien, avec des formes stylisées et des couleurs ocres, bleues et dorées";
-      case "Nordique":
-        return "dans le style des sagas nordiques, avec une ambiance froide, des runes, et un style inspiré des gravures sur pierre ou bois viking";
-      default:
-        return "dans un style mythologique classique";
-    }
-  };
+  // Affichage "machine à écrire"
+  useEffect(() => {
+    if (!fullStory) return;
 
+    let i = 0;
+    setDisplayedStory(""); // reset avant la nouvelle
+
+    const interval = setInterval(() => {
+      setDisplayedStory((prev) => {
+        const next = prev + fullStory[i];
+        i++;
+        if (i >= fullStory.length) clearInterval(interval);
+        return next;
+      });
+    }, 20); // ⏱️ vitesse : 20ms par caractère
+
+    return () => clearInterval(interval);
+  }, [fullStory]);
 
   const toggleElement = (element) => {
     setElements((prev) =>
-      prev.includes(element)
-        ? prev.filter((e) => e !== element)
-        : [...prev, element]
+      prev.includes(element) ? prev.filter((e) => e !== element) : [...prev, element]
     );
   };
 
@@ -88,7 +83,6 @@ function App() {
       }
 
       const data = await response.json();
-      console.log("✅ Image générée :", data);
       setGeneratedImage(data.data?.[0]?.url || "");
     } catch (error) {
       console.error("Erreur dans generateImage:", error);
@@ -96,84 +90,78 @@ function App() {
     }
   };
 
-
   const generateAdventure = async () => {
-const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
-setLoading(true);
-setGeneratedStory("");
-setGeneratedImage("");
+    const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
 
-try {
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: "gpt-4",
-      messages: [{ role: "user", content: prompt }],
-      temperature: 0.7,
-      stream: true, // ✅ Active le streaming
-    }),
-  });
+    setLoading(true);
+    setFullStory("");
+    setDisplayedStory("");
+    setGeneratedImage("");
 
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder("utf-8");
-  let story = "";
+    try {
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: "gpt-4",
+          messages: [{ role: "user", content: prompt }],
+          temperature: 0.7,
+          stream: true,
+        }),
+      });
 
-  while (true) {
-    const { value, done } = await reader.read();
-    if (done) break;
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder("utf-8");
 
-    const chunk = decoder.decode(value);
-    const lines = chunk.split("\n").filter(line => line.trim().startsWith("data: "));
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
 
-    for (const line of lines) {
-      const jsonStr = line.replace(/^data: /, "");
-      if (jsonStr === "[DONE]") return;
+        const chunk = decoder.decode(value);
+        const lines = chunk.split("\n").filter(line => line.trim().startsWith("data: "));
 
-      const parsed = JSON.parse(jsonStr);
-      const token = parsed.choices?.[0]?.delta?.content;
-      if (token) {
-        story += token;
-        setGeneratedStory(prev => prev + token); // ✅ Ajoute progressivement
+        for (const line of lines) {
+          const jsonStr = line.replace(/^data: /, "");
+          if (jsonStr === "[DONE]") {
+            setLoading(false);
+            return;
+          }
+
+          const parsed = JSON.parse(jsonStr);
+          const token = parsed.choices?.[0]?.delta?.content;
+          if (token) {
+            setFullStory(prev => prev + token); // stocke l’histoire complète
+          }
+        }
       }
+    } catch (err) {
+      console.error("Erreur lors de la génération :", err);
+      setFullStory("❌ Erreur lors de la génération.");
+      setLoading(false);
     }
-  }
-  } catch (err) {
-    console.error("Erreur lors de la génération :", err);
-    setGeneratedStory("❌ Erreur lors de la génération.");
-  }
+  };
 
-  setLoading(false); // ← Facultatif, à appeler après le stream si besoin
-}; // ✅ ← FIN de la fonction generateAdventure
+  const getAuraClass = () => {
+    if (civilisation === "Grèce") return "greek";
+    if (civilisation === "Égypte") return "egypt";
+    if (civilisation === "Nordique") return "nordic";
+    return "";
+  };
 
-const getAuraClass = () => {
-  if (civilisation === "Grèce") return "greek";
-  if (civilisation === "Égypte") return "egypt";
-  if (civilisation === "Nordique") return "nordic";
-  return "";
-};
-
-return (
-  <div className="page-layout">
-    ...
-
+  return (
+    <div className="page-layout">
       <div className="main-container">
         <h1 className={`title ${lightningClass}`}>MythoForge</h1>
-
 
         <div className="generator-box">
           <h2 className="hero-subtitle">Crée ton aventure mythologique</h2>
 
-
           <h3 className="subtitle">Civilisation :</h3>
-
-          {/* === Carte interactive === */}
           <div className="map-container">
             <img src="/images/mytho-map.jpg" alt="Carte mythologique" className="mytho-map" />
-
             <div className="map-buttons">
               <button className="map-zone grec" onClick={() => setCivilisation("Grèce")}>Grèce</button>
               <button className="map-zone egypt" onClick={() => setCivilisation("Égypte")}>Égypte</button>
@@ -234,18 +222,17 @@ return (
 
           {loading && (
             <div className="loading-block">
-              <p className="loading-text">🕰️Les Dieux écrivent l’histoire...</p>
+              <p className="loading-text">🕰️ Les Dieux écrivent l’histoire...</p>
             </div>
           )}
 
-         {generatedStory && (
-           <div className="story-block">
-            {generatedStory}
-         </div>
+          {displayedStory && (
+            <div className="story-block">
+              {displayedStory}
+            </div>
           )}
 
-
-          {!loading && generatedImage && (
+          {generatedImage && (
             <div className="image-block">
               <img
                 src={generatedImage}
@@ -259,4 +246,5 @@ return (
     </div>
   );
 }
+
 export default App;
