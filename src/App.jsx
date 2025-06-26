@@ -98,42 +98,54 @@ function App() {
 
 
   const generateAdventure = async () => {
-    const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
-    setLoading(true);
-    setGeneratedStory("");
-    setGeneratedImage(""); // <-- Réinitialiser l’image précédente
+const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
+setLoading(true);
+setGeneratedStory("");
+setGeneratedImage("");
 
-    try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-4",
-          messages: [{ role: "user", content: prompt }],
-          temperature: 0.7,
-        }),
-      });
+try {
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: "gpt-4",
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.7,
+      stream: true, // ✅ Active le streaming
+    }),
+  });
 
-      const data = await response.json();
-      const story = data.choices?.[0]?.message?.content || "❌ Erreur : aucune histoire reçue.";
-      setGeneratedStory(story);
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder("utf-8");
+  let story = "";
 
-      // 🖼️ Ensuite, générer l’image à partir de l’histoire
-      const storySummary = story.slice(0, 250); // tronque à 250 caractères
-      const imagePrompt = `Illustration mythologique ${getStyleFromCivilisation()}, représentant une scène avec ${elements.join(", ")}.`;
+  while (true) {
+    const { value, done } = await reader.read();
+    if (done) break;
 
+    const chunk = decoder.decode(value);
+    const lines = chunk.split("\n").filter(line => line.trim().startsWith("data: "));
 
-      generateImage(imagePrompt);
-    } catch (error) {
-      console.error("Erreur lors de la génération de l'histoire :", error);
-      setGeneratedStory("❌ Erreur lors de la génération.");
-    } finally {
-      setLoading(false);
+    for (const line of lines) {
+      const jsonStr = line.replace(/^data: /, "");
+      if (jsonStr === "[DONE]") return;
+
+      const parsed = JSON.parse(jsonStr);
+      const token = parsed.choices?.[0]?.delta?.content;
+      if (token) {
+        story += token;
+        setGeneratedStory(prev => prev + token); // ✅ Ajoute progressivement
+      }
     }
-  };
+  }
+} catch (err) {
+  console.error("Erreur lors de la génération :", err);
+  setGeneratedStory("❌ Erreur lors de la génération.");
+}
+
 
 
   const getAuraClass = () => {
@@ -243,5 +255,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
