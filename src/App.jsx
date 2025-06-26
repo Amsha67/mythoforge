@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 
-// ✅ Composant isolé pour éviter les re-renders de .main-container
-const StoryDisplay = React.memo(({ story }) => {
-  return (
-    <div className="story-block">
-      {story}
-    </div>
-  );
-});
-
 function App() {
   const [civilisation, setCivilisation] = useState("Égypte");
   const [style, setStyle] = useState("Tragédie héroïque");
@@ -43,20 +34,19 @@ function App() {
     };
   }, [civilisation]);
 
-  // Effet machine à écrire
   useEffect(() => {
     if (!fullStory) return;
 
+    const words = fullStory.split(" ");
     let i = 0;
     setDisplayedStory("");
+
     const interval = setInterval(() => {
-      setDisplayedStory(prev => {
-        const next = prev + fullStory[i];
-        i++;
-        if (i >= fullStory.length) clearInterval(interval);
-        return next;
-      });
-    }, 20);
+      setDisplayedStory(prev => prev + (i === 0 ? "" : " ") + words[i]);
+      i++;
+      if (i >= words.length) clearInterval(interval);
+    }, 120);
+
     return () => clearInterval(interval);
   }, [fullStory]);
 
@@ -74,18 +64,8 @@ function App() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${import.meta.env.VITE_OPENAI_API_KEY}`,
         },
-        body: JSON.stringify({
-          prompt,
-          n: 1,
-          size: "512x512",
-        }),
+        body: JSON.stringify({ prompt, n: 1, size: "512x512" }),
       });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Erreur HTTP:", response.status, errorText);
-        throw new Error(`Erreur OpenAI image: ${response.status}`);
-      }
 
       const data = await response.json();
       setGeneratedImage(data.data?.[0]?.url || "");
@@ -122,10 +102,7 @@ function App() {
 
       while (true) {
         const { value, done } = await reader.read();
-        if (done) {
-          setLoading(false);
-          return;
-        }
+        if (done) break;
 
         const chunk = decoder.decode(value);
         const lines = chunk.split("\n").filter(line => line.trim().startsWith("data: "));
@@ -136,16 +113,13 @@ function App() {
             setLoading(false);
             return;
           }
-
           const parsed = JSON.parse(jsonStr);
           const token = parsed.choices?.[0]?.delta?.content;
-          if (token) {
-            setFullStory(prev => prev + token);
-          }
+          if (token) setFullStory(prev => prev + token);
         }
       }
     } catch (err) {
-      console.error("Erreur lors de la génération :", err);
+      console.error("Erreur lors de la génération:", err);
       setFullStory("❌ Erreur lors de la génération.");
       setLoading(false);
     }
@@ -171,14 +145,14 @@ function App() {
             <img src="/images/mytho-map.jpg" alt="Carte mythologique" className="mytho-map" />
             <div className="map-buttons">
               <button className="map-zone grec" onClick={() => setCivilisation("Grèce")}>Grèce</button>
-              <button className="map-zone egypt" onClick={() => setCivilisation("Égypte")}>Égypte</button>
+              <button className="map-zone egypt" onClick={() => setCivilisation("\u00c9gypte")}>\u00c9gypte</button>
               <button className="map-zone nordic" onClick={() => setCivilisation("Nordique")}>Nordique</button>
             </div>
           </div>
 
           <div className="button-section">
             <div className="button-row">
-              {["Grèce", "Égypte", "Nordique"].map((c) => (
+              {["Grèce", "\u00c9gypte", "Nordique"].map((c) => (
                 <button
                   key={c}
                   onClick={() => setCivilisation(c)}
@@ -233,15 +207,15 @@ function App() {
             </div>
           )}
 
-          {displayedStory && <StoryDisplay story={displayedStory} />}
+          {displayedStory && (
+            <div className="story-block">
+              {displayedStory}
+            </div>
+          )}
 
           {generatedImage && (
             <div className="image-block">
-              <img
-                src={generatedImage}
-                alt="Illustration IA"
-                className="generated-image"
-              />
+              <img src={generatedImage} alt="Illustration IA" className="generated-image" />
             </div>
           )}
         </div>
