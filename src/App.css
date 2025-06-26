@@ -41,11 +41,15 @@ body.nordic::before {
 .main-container {
   max-width: 800px;
   width: 100%;
-  min-height: 600px; 
-  overflow-y: auto;
+  height: 700px; /* ✅ Fixe la hauteur */
+  overflow: hidden; /* Empêche le contenu de repousser le conteneur */
+  position: relative;
+
   background-image: url('/textures/marble.jpg');
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
+
   border-radius: 16px;
   padding: 2rem;
   text-align: center;
@@ -55,8 +59,12 @@ body.nordic::before {
     inset 0 6px 12px rgba(0, 0, 0, 0.3),
     inset 0 -4px 10px rgba(255, 255, 255, 0.05),
     0 4px 10px rgba(0, 0, 0, 0.4);
-   border: none; 
+     border: none;
+
+  will-change: transform, opacity; /* ✅ Hint pour que le navigateur ne redessine pas inutilement */
 }
+
+   
 
 
 
@@ -226,6 +234,8 @@ transition: transform 0.4s ease, box-shadow 0.4s ease, color 0.4s ease, border 0
 }
 
 .story-block {
+  max-height: 400px;
+  overflow-y: auto;
   margin-top: 1rem;
   background-color: transparent;
   border: none;
