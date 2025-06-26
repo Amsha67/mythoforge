@@ -10,7 +10,6 @@ background-blend-mode: lighten;
   background-position: center;
   background-repeat: no-repeat;
   font-family: 'EB Garamond', serif;
-  transition: background-image 1s ease-in-out;
   position: relative;
   overflow-x: hidden; /* on autorise le scroll vertical */
   min-height: 100vh;
