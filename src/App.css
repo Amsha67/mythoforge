@@ -41,6 +41,8 @@ body.nordic::before {
 .main-container {
   max-width: 800px;
   width: 100%;
+  min-height: 600px; 
+  overflow-y: auto;
   background-image: url('/textures/marble.jpg');
   background-size: cover;
   background-repeat: no-repeat;
@@ -49,13 +51,11 @@ body.nordic::before {
   text-align: center;
   z-index: 2;
 
-  /* Bas-relief réaliste dans le marbre */
   box-shadow:
-    inset 0 6px 12px rgba(0, 0, 0, 0.3),       /* ombre interne basse */
-    inset 0 -4px 10px rgba(255, 255, 255, 0.05), /* lumière douce au-dessus */
-    0 4px 10px rgba(0, 0, 0, 0.4);              /* ombre portée discrète */
-
-  border: none; /* supprime le liseré blanc */
+    inset 0 6px 12px rgba(0, 0, 0, 0.3),
+    inset 0 -4px 10px rgba(255, 255, 255, 0.05),
+    0 4px 10px rgba(0, 0, 0, 0.4);
+   border: none; 
 }
 
 
