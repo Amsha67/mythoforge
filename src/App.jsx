@@ -238,11 +238,12 @@ return (
             </div>
           )}
 
-          {!loading && generatedStory && (
-            <div className="story-block">
-              {generatedStory}
-            </div>
+         {generatedStory && (
+           <div className="story-block">
+            {generatedStory}
+         </div>
           )}
+
 
           {!loading && generatedImage && (
             <div className="image-block">
