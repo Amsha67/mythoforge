@@ -1,6 +1,9 @@
 /* App.css mis à jour avec fond dynamique et animations par civilisation */
 
 body {
+  color: #2c1e10; /* brun antique élégant */
+background-blend-mode: lighten;
+
   margin: 0;
   padding: 0;
   background-size: cover;
@@ -57,17 +60,25 @@ body::after {
 .main-container {
   max-width: 800px;
   width: 100%;
-  margin: 0 auto; /* <-- clé pour centrage horizontal */
   background-image: url('/textures/marble.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   border-radius: 16px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
   padding: 2rem;
-  z-index: 2;
   text-align: center;
+  z-index: 2;
 
+  /* Bas-relief réaliste dans le marbre */
+  box-shadow:
+    inset 0 6px 12px rgba(0, 0, 0, 0.3),       /* ombre interne basse */
+    inset 0 -4px 10px rgba(255, 255, 255, 0.05), /* lumière douce au-dessus */
+    0 4px 10px rgba(0, 0, 0, 0.4);              /* ombre portée discrète */
+
+  border: none; /* supprime le liseré blanc */
 }
+
+
+
 
 .title {
   text-align: center;
@@ -191,6 +202,27 @@ transition: transform 0.4s ease, box-shadow 0.4s ease, color 0.4s ease, border 0
   border: 1px solid rgba(120, 220, 255, 1);
   color: rgba(120, 220, 255, 1);
 }
+/* Aura + couleur persistante quand actif */
+.button-row .stone-button.greek.active {
+  background-color: rgba(255, 215, 0, 0.1);
+  box-shadow: 0 0 6px 3px rgba(255, 215, 0, 0.7);
+  border: 1px solid gold;
+  color: #ffd700;
+}
+
+.button-row .stone-button.egypt.active {
+  background-color: rgba(50, 220, 180, 0.1);
+  box-shadow: 0 0 6px 3px rgba(50, 220, 180, 0.7);
+  border: 1px solid rgba(50, 220, 180, 1);
+  color: rgba(50, 220, 180, 1);
+}
+
+.button-row .stone-button.nordic.active {
+  background-color: rgba(120, 220, 255, 0.1);
+  box-shadow: 0 0 6px 3px rgba(120, 220, 255, 0.7);
+  border: 1px solid rgba(120, 220, 255, 1);
+  color: rgba(120, 220, 255, 1);
+}
 
 
 
@@ -223,5 +255,187 @@ transition: transform 0.4s ease, box-shadow 0.4s ease, color 0.4s ease, border 0
   white-space: pre-wrap;
   color: #fff;
 }
+.image-block {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.generated-image {
+  width: 100%;
+  max-width: 512px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+@keyframes parchmentReveal {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.8) translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+  }
+}
+
+.story-block {
+  font-family: 'EB Garamond', serif;
+margin-top: 1rem;
+  padding: 1.2rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: #fff;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
+  animation: parchmentReveal 10s ease-out;
+  transform-origin: top center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.title {
+  font-family: 'Cinzel', serif;
+  font-size: 4rem;
+  text-align: center;
+  text-transform: uppercase;
+  color: #ffd700;
+  background: linear-gradient(to bottom, #ffcc00, #cc0000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow:
+    1px 1px 0 #660000,
+    2px 2px 1px #441100,
+    3px 3px 2px #000,
+    0 0 10px rgba(255, 204, 0, 0.6);
+  letter-spacing: 3px;
+  margin-bottom: 1.5rem;
+
+  animation: titleAppear 1.2s ease-out both;
+}
+
+
+.title::after {
+  content: "";
+  display: block;
+  width: 200px;
+  height: 6px;
+  margin: 0.5rem auto 0;
+  background: linear-gradient(to right, transparent, #ffd700, transparent);
+  border-radius: 3px;
+}
+
+
+.subtitle {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #e8d6b9;
+  text-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.6),
+    0 0 10px rgba(255, 215, 100, 0.2);
+  margin-top: 2.2rem;
+  margin-bottom: 0.8rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 0.3rem;
+}
+.hero-subtitle {
+  font-family: 'Cinzel', serif;
+  font-size: 2.2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #252523ea; /* doré antique net */
+  text-align: center;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  text-shadow:
+    1px 1px 2px rgba(0, 0, 0, 0.7),
+    0 0 4px rgba(255, 220, 150, 0.2);
+  position: relative;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem; /* espace horizontal et vertical entre les boutons */
+  margin-bottom: 1.5rem; /* espace entre les blocs */
+}
+.stone-button {
+  min-width: 150px;
+  text-align: center;
+   /* Ajout de l'effet bas-relief */
+  text-shadow:
+    1px 1px 2px rgba(0, 0, 0, 0.6),     /* ombre portée sombre */
+    -1px -1px 1px rgba(255, 255, 255, 0.3); /* lumière en relief */
+  box-shadow:
+    inset 1px 1px 2px rgba(255, 255, 255, 0.15),  /* lumière intérieure haut-gauche */
+    inset -2px -2px 3px rgba(0, 0, 0, 0.4);        /* ombre intérieure bas-droite */
+}
+.button-section {
+  background: rgba(245, 238, 230, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 0 4px rgba(255,255,255,0.05);
+  backdrop-filter: blur(1px);
+  background-image: linear-gradient(to bottom right, rgba(200,180,140,0.05), rgba(100,90,70,0.04));
+  transition: all 0.3s ease-in-out;
+}
+
+@keyframes lightningReveal {
+  0% {
+    background-position: -100%;
+    text-shadow: none;
+    opacity: 0;
+    letter-spacing: 10px;
+    filter: brightness(0.6);
+  }
+
+  50% {
+    background-position: 50%;
+    text-shadow: 0 0 8px white, 0 0 12px gold;
+    opacity: 1;
+    letter-spacing: 3px;
+    filter: brightness(1.2);
+  }
+
+  100% {
+    background-position: 100%;
+    text-shadow: 1px 1px 0 #660000,
+                 2px 2px 1px #441100,
+                 3px 3px 2px #000,
+                 0 0 10px rgba(255, 204, 0, 0.6);
+    letter-spacing: 3px;
+    filter: brightness(1);
+  }
+}
+
+.lightning-appear {
+  animation: lightningReveal 2s ease-out forwards;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0) 20%, rgba(255, 217, 0, 0) 80%);
+  background-size: 200%;
+  background-position: -100%;
+  transition: all 0.8s ease-out;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
