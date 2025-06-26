@@ -10,6 +10,13 @@ function App() {
   const [generatedImage, setGeneratedImage] = useState("");
   const [loading, setLoading] = useState(false);
   const [lightningClass, setLightningClass] = useState("lightning-appear");
+  const StoryDisplay = ({ story }) => {
+  return (
+    <div className="story-block">
+      {story}
+    </div>
+  );
+};
 
   // Animation d'apparition du titre
   useEffect(() => {
@@ -226,11 +233,8 @@ function App() {
             </div>
           )}
 
-          {displayedStory && (
-            <div className="story-block">
-              {displayedStory}
-            </div>
-          )}
+         {displayedStory && <StoryDisplay story={displayedStory} />}
+
 
           {generatedImage && (
             <div className="image-block">
