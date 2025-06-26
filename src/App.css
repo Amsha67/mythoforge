@@ -268,7 +268,6 @@ transition: transform 0.4s ease, box-shadow 0.4s ease, color 0.4s ease, border 0
 }
 
 
-
 .story-block {
   font-family: 'EB Garamond', serif;
   margin-top: 1rem;
@@ -282,6 +281,29 @@ transition: transform 0.4s ease, box-shadow 0.4s ease, color 0.4s ease, border 0
   background-repeat: no-repeat;
   background-blend-mode: multiply;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+
+  /* ✅ Anti-saut de mise en page */
+  min-height: 200px;
+  overflow-y: auto;
+
+  /* ✅ Curseur clignotant */
+  position: relative;
+}
+
+.story-block::after {
+  content: "|";
+  animation: blink 1s infinite;
+  margin-left: 4px;
+  opacity: 0.7;
+  position: absolute;
+  bottom: 1rem;
+  left: calc(0.5rem + 100%); /* suit le texte */
+}
+
+/* Clignotement du curseur */
+@keyframes blink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
 }
 
 .title {
