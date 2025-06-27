@@ -284,9 +284,24 @@ body.nordic::before {
   line-height: 1.6;
   white-space: pre-wrap;
   color: #fff;
-  
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+
+  min-height: 200px;
+
+ 
+  overflow: visible;
+
+
+  position: static;
 }
 
+
+.story-block::after {
+  display: none;
+}
 
 
 
