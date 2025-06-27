@@ -178,7 +178,8 @@ const imagePrompt = `Illustration mythologique ${getStyleFromCivilisation()}, re
 
               <div className="map-buttons">
                 <button
-                  className={`map-button greek ${civilisation === "Greque" ? "active" : ""}`}
+                  className={`map-button greek ${civilisation === "Grèce" ? "active" : ""}`}
+
                   onClick={() => setCivilisation("Grèce")}
                   style={{ top: "70%", left: "55%" }}
                 >
@@ -252,11 +253,12 @@ const imagePrompt = `Illustration mythologique ${getStyleFromCivilisation()}, re
   </div>
 )}
 
-{image && (
+{generatedImage && (
   <div className="image-container">
-    <img src={image} alt="Illustration IA" />
+    <img src={generatedImage} alt="Illustration IA" />
   </div>
 )}
+
 
 
           </div>

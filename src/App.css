@@ -1,3 +1,16 @@
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: -1;
+  pointer-events: none;
+  transition: background-image 0.8s ease-in-out;
+}
 
 body {
   color: #2c1e10; /* brun antique élégant */
@@ -515,25 +528,3 @@ margin-top: 1rem;
   border: 1px solid rgba(120, 220, 255, 1);
   color: rgba(120, 220, 255, 1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -247,20 +247,19 @@ const imagePrompt = `Illustration mythologique ${getStyleFromCivilisation()}, re
             )}
 
             {!loading && generatedStory && (
-              <div className="story-block">
-                {generatedStory}
-              </div>
-            )}
+  <div className="story-block">
+    <p>{generatedStory}</p>
+  </div>
+)}
 
-            {!loading && generatedImage && (
-              <div className="image-block">
-                <img
-                  src={generatedImage}
-                  alt="Illustration IA"
-                  className="generated-image"
-                />
-              </div>
-            )}
+{generatedImage && (
+  <div className="image-container">
+    <img src={generatedImage} alt="Illustration IA" />
+  </div>
+)}
+
+
+
           </div>
         </>
       )}
