@@ -717,16 +717,22 @@ body::after {
   color: #fff;
 }
 .image-block {
-  margin-top: 1.5rem;
+  margin-top: 3rem;
   text-align: center;
+  position: relative;
+  z-index: 1;
 }
 
 .generated-image {
   width: 100%;
-  max-width: 512px;
+  max-width: 600px;
+  height: auto;
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  position: relative;
 }
+
 
 .image-container {
   margin-top: 2rem;
