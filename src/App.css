@@ -284,28 +284,9 @@ body.nordic::before {
   line-height: 1.6;
   white-space: pre-wrap;
   color: #fff;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-blend-mode: multiply;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-
-  min-height: 200px;
-
   
-  overflow-y: visible;
-
-  position: relative;
 }
 
-.story-block::after {
-  content: "|";
-  animation: blink 1s infinite;
-  margin-left: 4px;
-  opacity: 0.7;
-  position: absolute;
-  bottom: 1rem;
-  left: calc(0.5rem + 100%);
-}
 
 
 
