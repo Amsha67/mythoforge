@@ -116,24 +116,45 @@ body.nordic::before {
 }
 
 /* === Boutons === */
-.stone-button {
-  animation: buttonClickShake 0.2s ease;
-  
-transition: transform 0.4s ease, box-shadow 0.4s ease, color 0.4s ease, border 0.4s ease;
+.map-buttons .stone-button {
+  pointer-events: auto;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 0.6rem 1.4rem;
+  font-size: 1.1rem;
+  min-width: 150px;
+  text-align: center;
+  border-radius: 8px;
   background-image: url('/textures/stone-button.jpg');
   background-size: cover;
-  color: white;
-  border: 1px solid #999;
-  padding: 0.6rem 1.4rem;
-  border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
+  color: white;
+  border: 2px solid transparent;
+  transition: box-shadow 0.3s ease, color 0.3s ease, border 0.3s ease;
+
+  /* Fixe pour éviter les mouvements */
+  animation: none !important;
+  transform: translate(-50%, -50%) !important;
+
+  text-shadow:
+    1px 1px 2px rgba(0, 0, 0, 0.6),
+    -1px -1px 1px rgba(255, 255, 255, 0.3);
+  box-shadow:
+    inset 1px 1px 2px rgba(255, 255, 255, 0.15),
+    inset -2px -2px 3px rgba(0, 0, 0, 0.4);
 }
+
+.map-buttons .stone-button:hover {
+  box-shadow: 0 0 12px 4px var(--aura-color);
+  border-color: var(--aura-color);
+  color: var(--aura-color);
+  /* Pas de transform ! */
+}
+
 .stone-button:active {
   animation: buttonClickShake 0.2s ease !important;
- transform: scale(0.96);
+  transform: scale(0.96);
 }
 
 
@@ -148,13 +169,6 @@ transition: transform 0.4s ease, box-shadow 0.4s ease, color 0.4s ease, border 0
   --aura-color: rgba(120, 220, 255, 1);
 }
 
-/* === Animation au survol pour TOUS les boutons === */
-.stone-button:hover {
-  animation: auraHoverEffectFixed 1.4s ease-in-out infinite;
-  box-shadow: 0 0 12px 4px var(--aura-color); /* aura visible dès survol */
-  border: 1px solid var(--aura-color);
-  color: var(--aura-color);
-}
 
 /* === Styles actifs === */
 .stone-button.greek.active {
@@ -451,34 +465,7 @@ transition: transform 0.4s ease, box-shadow 0.4s ease, color 0.4s ease, border 0
   height: 100%;
 }
 
-.map-zone {
-  position: absolute;
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.4);
-  color: #ffd700;
-  font-weight: bold;
-  border: 1px solid gold;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  font-family: 'Cinzel', serif;
-  text-shadow: 1px 1px 2px black;
-}
 
-.map-zone:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 10px gold;
-}
-
-/* Positionne les boutons selon l’image (à ajuster) */
-.map-zone.grec {
-  top: 45%;
-  left: 22%;
-}
-.map-zone.egypt {
-  top: 65%;
-  left: 55%;
-}/* App.css mis à jour avec fond dynamique et animations par civilisation */
 
 body {
   color: #2c1e10; /* brun antique élégant */
@@ -606,9 +593,8 @@ body::after {
 
 /* === Boutons === */
 .stone-button {
+  transition: transform 0.4s ease, box-shadow 0.4s ease, color 0.4s ease, border 0.4s ease;
   animation: buttonClickShake 0.2s ease;
-  
-transition: transform 0.4s ease, box-shadow 0.4s ease, color 0.4s ease, border 0.4s ease;
   background-image: url('/textures/stone-button.jpg');
   background-size: cover;
   color: white;
@@ -639,7 +625,6 @@ transition: transform 0.4s ease, box-shadow 0.4s ease, color 0.4s ease, border 0
 
 /* === Animation au survol pour TOUS les boutons === */
 .stone-button:hover {
-  animation: auraHoverEffectFixed 1.4s ease-in-out infinite;
   box-shadow: 0 0 12px 4px var(--aura-color); /* aura visible dès survol */
   border: 1px solid var(--aura-color);
   color: var(--aura-color);
@@ -704,8 +689,6 @@ transition: transform 0.4s ease, box-shadow 0.4s ease, color 0.4s ease, border 0
   color: rgba(120, 220, 255, 1);
 }
 
-
-
 /* === Bouton principal "Générer" === */
 .main-action {
   background-color: #a67c52;
@@ -747,16 +730,7 @@ transition: transform 0.4s ease, box-shadow 0.4s ease, color 0.4s ease, border 0
   box-shadow: 0 0 20px rgba(0,0,0,0.4);
 }
 
-@keyframes parchmentReveal {
-  0% {
-    opacity: 0;
-    transform: scaleY(0.8) translateY(-10px);
-  }
-  100% {
-    opacity: 1;
-    transform: scaleY(1) translateY(0);
-  }
-}
+
 
 .story-block {
   font-family: 'EB Garamond', serif;
@@ -770,7 +744,7 @@ margin-top: 1rem;
   background-size: cover;
   background-repeat: no-repeat;
   background-blend-mode: multiply;
-  animation: parchmentReveal 10s ease-out;
+ 
   transform-origin: top center;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
@@ -903,27 +877,117 @@ margin-top: 1rem;
   background-position: -100%;
   transition: all 0.8s ease-out;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.map-zone.nordic {
-  top: 20%;
-  left: 70%;
+.map-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 1000px;
+  margin: 2rem auto;
 }
+
+.mytho-map {
+  width: 100%;
+  display: block;
+  border-radius: 8px;
+}
+
+@keyframes mapButtonFloat {
+  0%   { transform: translate(-50%, -50%) scale(1); }
+  50%  { transform: translate(-50%, -54%) scale(1.07); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes floating {
+  0%, 100% { transform: translate(-50%, -50%); }
+  50% { transform: translate(-50%, -52%); }
+}
+
+@keyframes mapButtonClick {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(-2px); }
+  50%  { transform: translateX(2px); }
+  75%  { transform: translateX(-2px); }
+  100% { transform: translateX(0); }
+}
+
+.map-button {
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease, border 0.3s ease;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-family: 'Cinzel', serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+  background-image: url('/textures/stone-button.jpg');
+  background-size: cover;
+  border: 1px solid #999;
+  border-radius: 10px;
+  padding: 0.6rem 1.4rem;
+  box-shadow:
+    inset 1px 1px 2px rgba(255, 255, 255, 0.15),
+    inset -2px -2px 3px rgba(0, 0, 0, 0.4),
+    0 0 6px rgba(0,0,0,0.5);
+  cursor: pointer;
+
+  /* Bas-relief textuel */
+  text-shadow:
+    1px 1px 2px rgba(0, 0, 0, 0.6),
+    -1px -1px 1px rgba(255, 255, 255, 0.3);
+}
+
+/* === Hover animé === */
+.map-button:hover {
+  transform: translate(-50%, -54%) scale(1.07);
+  box-shadow: 0 0 14px 5px var(--aura-color);
+  border: 1px solid var(--aura-color);
+  color: var(--aura-color);
+}
+
+.map-button.active {
+  background-image: url('/textures/stone-button.jpg');
+  background-size: cover;
+  color: var(--aura-color);
+  border: 2px solid var(--aura-color);
+  box-shadow:
+    0 0 12px 4px var(--aura-color),
+    inset 0 0 10px rgba(255, 255, 255, 0.1),
+    inset 2px 2px 4px rgba(0, 0, 0, 0.3);
+  filter: brightness(1.1) contrast(1.05);
+  text-shadow:
+    1px 1px 2px rgba(0, 0, 0, 0.8),
+    -1px -1px 1px rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease-in-out;
+}
+
+
+/* === Aura couleur dynamique === */
+.map-button.greek {
+  --aura-color: gold;
+}
+.map-button.egypt {
+  --aura-color: hsla(155, 100%, 50%, 1);
+}
+.map-button.nordic {
+  --aura-color: rgba(120, 220, 255, 1);
+}
+
+.map-button.greek.active {
+  border: 1px solid gold;
+  color: gold;
+}
+.map-button.egypt.active {
+  border: 1px solid hsla(155, 100%, 50%, 1);
+  color: hsla(155, 100%, 50%, 1);
+}
+.map-button.nordic.active {
+  border: 1px solid rgba(120, 220, 255, 1);
+  color: rgba(120, 220, 255, 1);
+}
+
+
+
+
+
 
 
 

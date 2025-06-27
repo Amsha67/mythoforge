@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import CreationPersonnage from "./CreationPersonnage";
 
 function App() {
   const [civilisation, setCivilisation] = useState("Égypte");
@@ -9,6 +10,13 @@ function App() {
   const [generatedImage, setGeneratedImage] = useState("");
   const [loading, setLoading] = useState(false);
 const [lightningClass, setLightningClass] = useState("lightning-appear");
+const [persoValide, setPersoValide] = useState(false);
+const [personnage, setPersonnage] = useState({
+  nom: "",
+  classe: "",
+  origine: ""
+});
+
 
 useEffect(() => {
   const timeout = setTimeout(() => {
@@ -98,7 +106,8 @@ useEffect(() => {
 
 
   const generateAdventure = async () => {
-  const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments suivants : ${elements.join(", ")}`;
+  const prompt = `Génère une histoire mythologique courte basée sur la civilisation ${civilisation}, avec le style ${style}, incluant les éléments : ${elements.join(", ")}, mettant en scène un héros nommé ${personnage.nom}, un ${personnage.classe} ${personnage.attribut}.`;
+
   setLoading(true);
   setGeneratedStory("");
   setGeneratedImage(""); // <-- Réinitialiser l’image précédente
@@ -144,92 +153,121 @@ const imagePrompt = `Illustration mythologique ${getStyleFromCivilisation()}, re
   };
 
   return (
-    <div className="page-layout">
-      <div className="main-container">
-        <h1 className={`title ${lightningClass}`}>MythoForge</h1>
+  <div className="page-layout">
+    <div className="main-container">
+      <h1 className={`title ${lightningClass}`}>MythoForge</h1>
+      
 
+      {!persoValide ? (
+  <CreationPersonnage
+    civilisation={civilisation}
+    personnage={personnage}
+    setPersonnage={setPersonnage}
+    onValider={() => setPersoValide(true)}
+        />
+      ) : (
+        <>
+          
 
-        <div className="generator-box">
-          <h2 className="hero-subtitle">Crée ton aventure mythologique</h2>
+          <div className="generator-box">
+            <h2 className="hero-subtitle">Crée ton aventure mythologique</h2>
 
+            {/* === Carte interactive === */}
+            <div className="map-container">
+              <img src="/images/mytho-map.jpg" alt="Carte mythologique" className="mytho-map" />
 
- <h3 className="subtitle">Civilisation :</h3>
-<div className="button-section">
-  <div className="button-row">
-    {["Grèce", "Égypte", "Nordique"].map((c) => (
-      <button
-        key={c}
-        onClick={() => setCivilisation(c)}
-        className={`stone-button ${getAuraClass()} ${civilisation === c ? "active" : ""}`}
-      >
-        {c}
-      </button>
-    ))}
-  </div>
-</div>
+              <div className="map-buttons">
+                <button
+                  className={`map-button greek ${civilisation === "Greque" ? "active" : ""}`}
+                  onClick={() => setCivilisation("Grèce")}
+                  style={{ top: "70%", left: "55%" }}
+                >
+                  Grèce
+                </button>
 
-<h3 className="subtitle">Style :</h3>
-<div className="button-section">
-  <div className="button-row">
-    {["Tragédie héroïque", "Épopée divine", "Romance interdite", "Complot cosmique"].map((s) => (
-      <button
-        key={s}
-        onClick={() => setStyle(s)}
-        className={`stone-button ${getAuraClass()} ${style === s ? "active" : ""}`}
-      >
-        {s}
-      </button>
-    ))}
-  </div>
-</div>
+                <button
+                  className={`map-button egypt ${civilisation === "Égypte" ? "active" : ""}`}
+                  onClick={() => setCivilisation("Égypte")}
+                  style={{ top: "90%", left: "80%" }}
+                >
+                  Égypte
+                </button>
 
-<h3 className="subtitle">Éléments clés :</h3>
-<div className="button-section">
-  <div className="button-row">
-    {["Héros maudit", "Monstre ancestral", "Artefact sacré", "Dieux en guerre"].map((e) => (
-      <button
-        key={e}
-        onClick={() => toggleElement(e)}
-        className={`stone-button ${getAuraClass()} ${elements.includes(e) ? "active" : ""}`}
-      >
-        {e}
-      </button>
-    ))}
-  </div>
-</div>
-
-          <button
-            onClick={generateAdventure}
-            className={`stone-button main-action ${getAuraClass()}`}
-          >
-            Écrire l'histoire
-          </button>
-
-          {loading && (
-            <div className="loading-block">
-              <p className="loading-text">🕰️Les Dieux écrivent l’histoire...</p>
+                <button
+                  className={`map-button nordic ${civilisation === "Nordique" ? "active" : ""}`}
+                  onClick={() => setCivilisation("Nordique")}
+                  style={{ top: "20%", left: "30%" }}
+                >
+                  Nordique
+                </button>
+              </div>
             </div>
-          )}
 
-          {!loading && generatedStory && (
-            <div className="story-block">
-              {generatedStory}
+            <h3 className="subtitle">Style :</h3>
+            <div className="button-section">
+              <div className="button-row">
+                {["Tragédie", "Épopée", "Romance ", "Complot"].map((s) => (
+                  <button
+                    key={s}
+                    onClick={() => setStyle(s)}
+                    className={`stone-button ${getAuraClass()} ${style === s ? "active" : ""}`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
             </div>
-          )}
 
-          {!loading && generatedImage && (
-            <div className="image-block">
-              <img
-                src={generatedImage}
-                alt="Illustration IA"
-                className="generated-image"
-              />
+            <h3 className="subtitle">Éléments clés :</h3>
+            <div className="button-section">
+              <div className="button-row">
+                {["Héros déchut", "Monstre ancestral", "Artefact sacré", "Dieux en colère"].map((e) => (
+                  <button
+                    key={e}
+                    onClick={() => toggleElement(e)}
+                    className={`stone-button ${getAuraClass()} ${elements.includes(e) ? "active" : ""}`}
+                  >
+                    {e}
+                  </button>
+                ))}
+              </div>
             </div>
-          )}
-        </div>
-      </div>
+
+            <button
+              onClick={generateAdventure}
+              className={`stone-button main-action ${getAuraClass()}`}
+            >
+              Écrire l'histoire
+            </button>
+
+            {loading && (
+              <div className="loading-block">
+                <p className="loading-text">🕰️Les Dieux écrivent l’histoire...</p>
+              </div>
+            )}
+
+            {!loading && generatedStory && (
+              <div className="story-block">
+                {generatedStory}
+              </div>
+            )}
+
+            {!loading && generatedImage && (
+              <div className="image-block">
+                <img
+                  src={generatedImage}
+                  alt="Illustration IA"
+                  className="generated-image"
+                />
+              </div>
+            )}
+          </div>
+        </>
+      )}
     </div>
-  );
+  </div>
+);
+
 }
 
 export default App;

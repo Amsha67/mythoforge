@@ -1,0 +1,142 @@
+/* ==== Titre de section ==== */
+.subtitle {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  color: #e7b018da;
+  text-shadow:
+    1px 1px 0 #5a3e1b,
+    2px 2px 2px #000;
+  margin-bottom: 1.2rem;
+  text-align: center;
+  letter-spacing: 2px;
+}
+
+/* ==== Boîte de création ==== */
+.creation-box {
+  background-image: url('/textures/marble.jpg');
+  background-size: cover;
+  background-blend-mode: overlay;
+  background-color: rgba(60, 40, 20, 0.6);
+  border: 2px solid rgba(255, 215, 130, 0.3);
+  box-shadow:
+    inset 0 0 10px rgba(255, 230, 180, 0.15),
+    0 0 12px rgba(90, 60, 30, 0.4);
+  border-radius: 16px;
+  padding: 2rem;
+  backdrop-filter: blur(2px);
+  animation: fadeInSlide 0.8s ease-out both;
+}
+
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==== Champs d'entrée ==== */
+.field-group {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 215, 150, 0.3);
+}
+
+.field-group label {
+  display: block;
+  font-weight: bold;
+  color: #ffecc2;
+  margin-bottom: 0.4rem;
+  font-size: 1.1rem;
+  text-shadow: 1px 1px 3px #000;
+}
+
+.input-with-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.input-with-button input,
+.input-with-button select {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  background-color: rgba(90, 70, 50, 0.3);
+  color: #fff6d9;
+  border: 1px solid #d1b273;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'EB Garamond', serif;
+  box-shadow:
+    inset 1px 1px 2px rgba(255,255,255,0.05),
+    inset -2px -2px 3px rgba(0,0,0,0.6);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  margin-right: 0.2rem;
+}
+
+.input-with-button input:hover,
+.input-with-button select:hover {
+  border-color: #ffd700;
+  box-shadow: 0 0 5px #ffd70055;
+}
+
+.input-with-button input:focus,
+.input-with-button select:focus {
+  outline: none;
+  border-color: #ffda85;
+  box-shadow: 0 0 8px rgba(255, 215, 100, 0.6);
+}
+
+/* ==== Boutons "Aléatoire" ==== */
+.stone-button.small {
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid #d1b273;
+  color: #800101c2;
+  font-family: 'Cinzel', serif;
+  box-shadow: 0 0 4px rgba(255, 149, 100, 0.411);
+  transition: all 0.3s ease;
+}
+
+.stone-button.small:hover {
+  background-color: rgba(255, 230, 150, 0.1);
+  box-shadow: 0 0 8px rgba(255, 220, 120, 0.6);
+  color: #ffe6b4;
+  cursor: pointer;
+}
+.hero-validate {
+  margin-top: 2rem;
+  padding: 0.8rem 2rem;
+  font-size: 1.2rem;
+  background-image: url('/textures/stone-button.jpg');
+  background-size: cover;
+  border: 1px solid #d1b273;
+  color: #800101c2;
+  text-shadow: 1px 1px 2px #00000077;
+  box-shadow:
+    0 0 12px rgba(255, 215, 100, 0.3),
+    inset 0 0 4px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  border-radius: 10px;
+}
+
+.hero-validate:hover {
+  box-shadow:
+    0 0 18px rgba(255, 220, 130, 0.5),
+    inset 0 0 4px rgba(255, 255, 255, 0.1);
+  color: #ffd970;
+  border-color: #ffda85;
+  transform: scale(1.03);
+}
+
+.hero-validate:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 6px rgba(200, 150, 50, 0.4);
+}
