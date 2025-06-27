@@ -1,4 +1,4 @@
-/* App.css mis à jour avec fond dynamique et animations par civilisation */
+
 
 body::before {
   content: "";
@@ -34,7 +34,7 @@ body.nordic::before {
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* ✅ ne pas recentrer verticalement */
+  align-items: flex-start; 
   padding: 2rem;
   box-sizing: border-box;
 }
@@ -55,7 +55,7 @@ body.nordic::before {
     0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
-/* ✅ Texture stable via ::before */
+
 .main-container::before {
   content: "";
   position: absolute;
@@ -133,7 +133,7 @@ body.nordic::before {
   border: 2px solid transparent;
   transition: box-shadow 0.3s ease, color 0.3s ease, border 0.3s ease;
 
-  /* Fixe pour éviter les mouvements */
+  
   animation: none !important;
   transform: translate(-50%, -50%) !important;
 
@@ -149,7 +149,7 @@ body.nordic::before {
   box-shadow: 0 0 12px 4px var(--aura-color);
   border-color: var(--aura-color);
   color: var(--aura-color);
-  /* Pas de transform ! */
+  
 }
 
 .stone-button:active {
@@ -207,7 +207,7 @@ body.nordic::before {
   border: 1px solid rgba(120, 220, 255, 1);
   color: rgba(120, 220, 255, 1);
 }
-/* Aura + couleur persistante quand actif */
+
 .button-row .stone-button.greek.active {
   background-color: rgba(255, 215, 0, 0.1);
   box-shadow: 0 0 6px 3px rgba(255, 215, 0, 0.7);
@@ -289,11 +289,11 @@ body.nordic::before {
   background-blend-mode: multiply;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 
-  /* ✅ Anti-saut de mise en page */
   min-height: 200px;
-  overflow-y: auto;
 
-  /* ✅ Curseur clignotant */
+  
+  overflow-y: visible;
+
   position: relative;
 }
 
@@ -304,10 +304,11 @@ body.nordic::before {
   opacity: 0.7;
   position: absolute;
   bottom: 1rem;
-  left: calc(0.5rem + 100%); /* suit le texte */
+  left: calc(0.5rem + 100%);
 }
 
-/* Clignotement du curseur */
+
+
 @keyframes blink {
   0%, 100% { opacity: 0; }
   50% { opacity: 1; }
@@ -378,19 +379,20 @@ body.nordic::before {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem; /* espace horizontal et vertical entre les boutons */
-  margin-bottom: 1.5rem; /* espace entre les blocs */
+  gap: 1rem; 
+  margin-bottom: 1.5rem; 
 }
 .stone-button {
   min-width: 150px;
   text-align: center;
+
    /* Ajout de l'effet bas-relief */
   text-shadow:
-    1px 1px 2px rgba(0, 0, 0, 0.6),     /* ombre portée sombre */
-    -1px -1px 1px rgba(255, 255, 255, 0.3); /* lumière en relief */
+    1px 1px 2px rgba(0, 0, 0, 0.6),    
+    -1px -1px 1px rgba(255, 255, 255, 0.3);
   box-shadow:
-    inset 1px 1px 2px rgba(255, 255, 255, 0.15),  /* lumière intérieure haut-gauche */
-    inset -2px -2px 3px rgba(0, 0, 0, 0.4);        /* ombre intérieure bas-droite */
+    inset 1px 1px 2px rgba(255, 255, 255, 0.15),  
+    inset -2px -2px 3px rgba(0, 0, 0, 0.4);       
 }
 .button-section {
   background: rgba(245, 238, 230, 0.06);
@@ -468,7 +470,7 @@ body.nordic::before {
 
 
 body {
-  color: #2c1e10; /* brun antique élégant */
+  color: #2c1e10; 
 background-blend-mode: lighten;
 
   margin: 0;
@@ -479,7 +481,7 @@ background-blend-mode: lighten;
   font-family: 'EB Garamond', serif;
   transition: background-image 1s ease-in-out;
   position: relative;
-  overflow-x: hidden; /* on autorise le scroll vertical */
+  overflow-x: hidden; 
   min-height: 100vh;
 }
 
@@ -496,7 +498,7 @@ body.nordic {
   background-image: url('/backgrounds/bg-nordique.jpg');
 }
 
-/* Calques d’arrière-plan animés */
+
 body::before,
 body::after {
   content: "";
@@ -513,7 +515,7 @@ body::after {
   pointer-events: none;
 }
 
-/* (Reste du style inchangé : layout, boutons, etc.) */
+
 
 .page-layout {
   width: 100%;
@@ -537,11 +539,11 @@ body::after {
 
   /* Bas-relief réaliste dans le marbre */
   box-shadow:
-    inset 0 6px 12px rgba(0, 0, 0, 0.3),       /* ombre interne basse */
-    inset 0 -4px 10px rgba(255, 255, 255, 0.05), /* lumière douce au-dessus */
-    0 4px 10px rgba(0, 0, 0, 0.4);              /* ombre portée discrète */
+    inset 0 6px 12px rgba(0, 0, 0, 0.3),      
+    inset 0 -4px 10px rgba(255, 255, 255, 0.05), 
+    0 4px 10px rgba(0, 0, 0, 0.4);            
 
-  border: none; /* supprime le liseré blanc */
+  border: none; 
 }
 
 
@@ -623,9 +625,9 @@ body::after {
   --aura-color: rgba(120, 220, 255, 1);
 }
 
-/* === Animation au survol pour TOUS les boutons === */
+
 .stone-button:hover {
-  box-shadow: 0 0 12px 4px var(--aura-color); /* aura visible dès survol */
+  box-shadow: 0 0 12px 4px var(--aura-color); 
   border: 1px solid var(--aura-color);
   color: var(--aura-color);
 }
@@ -667,7 +669,7 @@ body::after {
   border: 1px solid rgba(120, 220, 255, 1);
   color: rgba(120, 220, 255, 1);
 }
-/* Aura + couleur persistante quand actif */
+
 .button-row .stone-button.greek.active {
   background-color: rgba(255, 215, 0, 0.1);
   box-shadow: 0 0 6px 3px rgba(255, 215, 0, 0.7);
@@ -800,7 +802,7 @@ margin-top: 1rem;
   font-size: 2.2rem;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #252523ea; /* doré antique net */
+  color: #252523ea;
   text-align: center;
   margin-top: 1.5rem;
   margin-bottom: 2rem;
@@ -814,19 +816,20 @@ margin-top: 1rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem; /* espace horizontal et vertical entre les boutons */
-  margin-bottom: 1.5rem; /* espace entre les blocs */
+  gap: 1rem; 
+  margin-bottom: 1.5rem; 
 }
 .stone-button {
   min-width: 150px;
   text-align: center;
+
    /* Ajout de l'effet bas-relief */
   text-shadow:
-    1px 1px 2px rgba(0, 0, 0, 0.6),     /* ombre portée sombre */
-    -1px -1px 1px rgba(255, 255, 255, 0.3); /* lumière en relief */
+    1px 1px 2px rgba(0, 0, 0, 0.6),     
+    -1px -1px 1px rgba(255, 255, 255, 0.3); 
   box-shadow:
-    inset 1px 1px 2px rgba(255, 255, 255, 0.15),  /* lumière intérieure haut-gauche */
-    inset -2px -2px 3px rgba(0, 0, 0, 0.4);        /* ombre intérieure bas-droite */
+    inset 1px 1px 2px rgba(255, 255, 255, 0.15),  
+    inset -2px -2px 3px rgba(0, 0, 0, 0.4);       
 }
 .button-section {
   background: rgba(245, 238, 230, 0.06);
@@ -929,13 +932,13 @@ margin-top: 1rem;
     0 0 6px rgba(0,0,0,0.5);
   cursor: pointer;
 
-  /* Bas-relief textuel */
+  
   text-shadow:
     1px 1px 2px rgba(0, 0, 0, 0.6),
     -1px -1px 1px rgba(255, 255, 255, 0.3);
 }
 
-/* === Hover animé === */
+
 .map-button:hover {
   transform: translate(-50%, -54%) scale(1.07);
   box-shadow: 0 0 14px 5px var(--aura-color);
