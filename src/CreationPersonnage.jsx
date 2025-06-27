@@ -42,11 +42,17 @@ const classesRPG = [
   "Tisseur de destin", "Maître des bêtes", "Stratège", "Porteur d’artefacts", "Voyageur des songes", "Templier du Soleil", "Esprit de la forêt", "Oracle de l’ombre"
 ];
 
-function genererClasseAleatoire() {
-  const randomIndex = Math.floor(Math.random() * classesRPG.length);
-  return classesRPG[randomIndex];
+function getRandomItem(list) {
+  return list[Math.floor(Math.random() * list.length)];
 }
 
+function genererClasseAleatoire() {
+  return getRandomItem(classesRPG);
+}
+
+function genererAttributAleatoire() {
+  return getRandomItem(attributsSpeciaux);
+}
 
 const attributsSpeciaux = [
   "Force divine", "Vision prophétique", "Maîtrise des éléments", "Bénédiction des dieux",
@@ -60,10 +66,6 @@ const attributsSpeciaux = [
   "Portail dimensionnel"
 ];
 
-function getRandomItem(list) {
-  return list[Math.floor(Math.random() * list.length)];
-}
-
 function genererNomAleatoire(civilisation) {
   const racines = racinesMythos[civilisation] || racinesMythos["Grèce"];
   return (
@@ -72,7 +74,6 @@ function genererNomAleatoire(civilisation) {
     getRandomItem(racines.suffixes)
   );
 }
-
 
 function CreationPersonnage({ personnage, setPersonnage, onValider, civilisation }) {
   const handleChange = (e) => {
@@ -166,7 +167,6 @@ function CreationPersonnage({ personnage, setPersonnage, onValider, civilisation
       </div>
 
       <button className="stone-button main-action hero-validate" onClick={onValider}>
-
         Créer le héros
       </button>
     </div>
