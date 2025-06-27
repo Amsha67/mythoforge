@@ -728,24 +728,29 @@ body::after {
   box-shadow: 0 0 20px rgba(0,0,0,0.4);
 }
 
+.image-container {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
 
 
 .story-block {
   font-family: 'EB Garamond', serif;
-margin-top: 1rem;
-  padding: 1.2rem;
-  border-radius: 10px;
   font-size: 1.1rem;
   line-height: 1.6;
   white-space: pre-wrap;
   color: #fff;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-blend-mode: multiply;
- 
-  transform-origin: top center;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  margin: 2rem auto;
+  max-width: 800px;
 }
+
 
 .title {
   font-family: 'Cinzel', serif;
