@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 Cléopenai.env
+# .gitignore
+.env
+.env.*  # ça inclut .env.local

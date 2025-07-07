@@ -21,25 +21,25 @@ const racinesMythos = {
 
 const classesRPG = [
   // Combattants
-  "Guerrier", "Paladin", "Barbare", "Berserker", "Maître d’armes", "Gladiateur", "Lame dansante", "Champion sacré", "Chevalier noir", "Templier",
+  "Guerrier", "Paladin","Berserker", "Gladiateur", "Chevalier noir",
 
   // Mages
-  "Mage", "Sorcier", "Archimage", "Évocationniste", "Nécromancien", "Enchanteur", "Pyromancien", "Cryomancien", "Thaumaturge", "Prophète",
+  "Mage", "Nécromancien","Ensorceleur","Invocateur", "Élémentaliste",
 
   // Rôdeurs
-  "Rôdeur", "Archer", "Chasseur", "Traqueur", "Voleur", "Assassin", "Ombre", "Éclaireur", "Tireur d’élite", "Chasseur de primes",
+  "Rôdeur", "Voleur", "Assassin",
 
   // Hybrides
-  "Moine", "Barde", "Alchimiste", "Inquisiteur", "Invocateur", "Ensorceleur", "Élémentaliste", "Runiste", "Chevalier-mage",
+  "Moine", "Barde", "Alchimiste",
 
   // Surnaturelles
-  "Lycan", "Vampire", "Démoniste", "Enfant des dieux", "Métamorphe", "Avatar spirituel", "Héraut du Néant",
+  "Lycan", "Vampire", "Démon", "Enfant des dieux",
 
   // Défensives
-  "Gardien", "Défenseur", "Clerc", "Prêtre", "Chaman", "Porteur de bouclier", "Exorciste", "Émissaire divin",
+  "Gardien", "Clerc", "Prêtre", "Chaman",
 
   // Spéciales
-  "Tisseur de destin", "Maître des bêtes", "Stratège", "Porteur d’artefacts", "Voyageur des songes", "Templier du Soleil", "Esprit de la forêt", "Oracle de l’ombre"
+  "Oniromancien",
 ];
 
 function getRandomItem(list) {
@@ -55,16 +55,23 @@ function genererAttributAleatoire() {
 }
 
 const attributsSpeciaux = [
-  "Force divine", "Vision prophétique", "Maîtrise des éléments", "Bénédiction des dieux",
-  "Commandement sur les bêtes", "Résistance aux malédictions", "Contrôle du feu",
-  "Maître des ombres", "Lien avec le monde des esprits", "Parole magique", "Peau d'acier",
-  "Sang de titan", "Vol mystique", "Esprit de la nature", "Double personnalité divine",
-  "Aura de guérison", "Invulnérabilité temporaire", "Voyage dans les rêves",
-  "Manipulation du temps", "Vision de l'au-delà", "Loyauté éternelle", "Appel des morts",
-  "Écaille de dragon", "Enfant de la prophétie", "Porteur d’une flamme antique",
-  "Protection runique", "Cri de guerre mythique", "Œil de vérité", "Sang maudit",
-  "Portail dimensionnel"
+  "Épée Solaire",
+  "Amulette maudite",
+  "Bâton des Éléments",
+  "Anneau Céleste",
+  "Ocarina de lien",
+  "Bouclier de verre",
+  "Cape des Ombres",
+  "Masque Ancien",
+  "Grimoire Interdit",
+  "Armure Sacrée",
+  "Sang de Dragon",
+  "Ailes mystiques",
+  "Couronne Sylvestre",
+  "Calice d'Âmes",
+  "Sceptre de Guérison"
 ];
+
 
 function genererNomAleatoire(civilisation) {
   const racines = racinesMythos[civilisation] || racinesMythos["Grèce"];
@@ -139,7 +146,7 @@ function CreationPersonnage({ personnage, setPersonnage, onValider, civilisation
       </div>
 
       <div className="field-group">
-        <label>Attribut spécial :</label>
+        <label>Objet légendaire :</label>
         <div className="input-with-button">
           <select
             name="attribut"
